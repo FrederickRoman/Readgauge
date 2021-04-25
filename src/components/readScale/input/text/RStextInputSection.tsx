@@ -2,6 +2,14 @@ import React from "react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 
+import IReadabilityState from "../../../../types/interfaces/IReadabilityState";
+import ReadabilityActionType from "../../../../types/unions/ReadabilityActionType";
+
+interface IRStextInputSectionProps {
+  readability: IReadabilityState;
+  readabilityDispatch: React.Dispatch<ReadabilityActionType>;
+}
+
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -13,12 +21,14 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-function RStextInputSection() {
+function RStextInputSection(props: IRStextInputSectionProps): JSX.Element {
+  const { readability, readabilityDispatch } = props;
+  const { text } = readability;
   const classes = useStyles();
-  const [value, setValue] = React.useState("Easy reading is hard writing");
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(event.target.value);
+    const changedText = event.target.value;
+    readabilityDispatch({ type: "update text", payload: changedText });
   };
 
   return (
@@ -28,7 +38,7 @@ function RStextInputSection() {
         label="Write text here"
         multiline
         rows={4}
-        value={value}
+        value={text}
         onChange={handleChange}
         variant="outlined"
       />
