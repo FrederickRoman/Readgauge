@@ -1,5 +1,5 @@
 function isAnAbbreviation(token: string): boolean {
-  const abbrevationList: readonly string[] = Object.freeze(['Mr.', 'Mrs.'] )
+  const abbrevationList: readonly string[] = Object.freeze(["Mr.", "Mrs."]);
   return abbrevationList.includes(token);
 }
 
@@ -7,7 +7,8 @@ function isEndingWord(token: string): boolean {
   return (
     (token.endsWith(".") && !isAnAbbreviation(token)) ||
     token.endsWith("!") ||
-    token.endsWith("?")
+    token.endsWith("?") ||
+    token.endsWith('?"')
   );
 }
 
@@ -20,7 +21,7 @@ class SentenceTokenizerService {
         endingWords.push(token);
       }
     });
-    console.log(endingWords);
+    // console.log(endingWords);
     const sentences: string[] = [];
     let sentence: string = "";
     tokens.forEach((token) => {

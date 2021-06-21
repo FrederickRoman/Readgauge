@@ -9,7 +9,7 @@ class TokenizationService {
   }
   static wordTokenize(sentence: string): string[] {
     const wordTokens: string[] = WordTokenizerService.tokenize(sentence);
-    console.log(wordTokens);
+    // console.log(wordTokens);
     return wordTokens;
   }
 }

@@ -6,6 +6,8 @@ import IReadabilityState from "../../../../types/interfaces/IReadabilityState";
 import ReadabilityActionType from "../../../../types/unions/ReadabilityActionType";
 
 interface IRStextInputSectionProps {
+  text: string;
+  setText: React.Dispatch<React.SetStateAction<string>>;
   readability: IReadabilityState;
   readabilityDispatch: React.Dispatch<ReadabilityActionType>;
 }
@@ -22,13 +24,14 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 function RStextInputSection(props: IRStextInputSectionProps): JSX.Element {
-  const { readability, readabilityDispatch } = props;
+  const { text: _text, setText, readability, readabilityDispatch } = props;
   const { text } = readability;
   const classes = useStyles();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const changedText = event.target.value;
     readabilityDispatch({ type: "update text", payload: changedText });
+    setText(changedText);
   };
 
   return (

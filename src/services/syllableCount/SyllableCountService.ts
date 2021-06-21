@@ -1,4 +1,4 @@
-import * as tf from "@tensorflow/tfjs";
+import { LayersModel, tensor2d, Tensor } from "@tensorflow/tfjs";
 
 function wordEncode(input: string): number[] {
   const wordLowerCase = input.toLowerCase();
@@ -9,12 +9,12 @@ function wordEncode(input: string): number[] {
     ...inputCharsArray
       .map((_, i) => {
         const binaryString = (wordLowerCase.charCodeAt(i) - 97).toString(2);
-        console.log("binaryString");
-        console.log(binaryString);
+        // console.log("binaryString");
+        // console.log(binaryString);
         const binaryArray = binaryString.split("").map((c) => Number(c));
         const numOfDigits = binaryArray.length;
-        console.log("input to encode");
-        console.log(input);
+        // console.log("input to encode");
+        // console.log(input);
         const zeroPad = Array(5 - numOfDigits).fill(0);
         const binaryPaddedArray = [...zeroPad, ...binaryArray];
         // console.log(binaryPaddedArray);
@@ -25,10 +25,10 @@ function wordEncode(input: string): number[] {
 }
 
 function indexOfMax(arr: number[]): number {
-  console.log('arr.length');
-  console.log(arr.length);
-  console.log('arr');
-  console.log(arr);
+  // console.log("arr.length");
+  // console.log(arr.length);
+  // console.log("arr");
+  // console.log(arr);
   let cur = Infinity;
   let max = -Infinity;
   let indexOfMax = -1;
@@ -43,7 +43,7 @@ function indexOfMax(arr: number[]): number {
 }
 
 class SyllableCountService {
-  static  countSyllables(word: string): number {
+  static countSyllables(word: string): number {
     // // const MODEL_DIR = "file://./neuralNet/model.json";
     // // const model = await tf.loadLayersModel(MODEL_DIR);
     // const model = await tf.loadLayersModel(
@@ -57,6 +57,23 @@ class SyllableCountService {
     // console.log("prediction");
     // console.log(syllableCount);
     return word.length;
+  }
+  static countSyllablesM(words: string[], model: LayersModel): number {
+    // const encodedWord: number[] = wordEncode(word);
+    // const inputTensor = tf.tensor2d(encodedWord, [1, encodedWord.length]);
+    // const outputTensor = model.predict(inputTensor) as tf.Tensor;
+    // const outputArray = outputTensor.arraySync() as number[][];
+    // const syllableCount: number = indexOfMax(outputArray[0]);
+
+    const encodedWords: number[][] = words.map((word) => wordEncode(word));
+    const numOfInputs = encodedWords.length;
+    const lenghtOfInputs = 33 * 5;
+    const inputSize: [number, number] = [encodedWords.length, 33 * 5];
+    const inputTensor = tensor2d(encodedWords, inputSize);
+    const outputTensor = model.predict(inputTensor) as Tensor;
+    const outputArray = outputTensor.arraySync() as number[][];
+    const syllableCount: number[] = outputArray.map((t) => indexOfMax(t));
+    return syllableCount.reduce((acc, cur) => acc + cur);
   }
 }
 

@@ -29,8 +29,8 @@ const lexer: moo.Lexer = moo.compile(WORD_TOKENIZER_TYPES_REGEX);
 
 class WordTokenizerService {
   static tokenize(sentence: string): string[] {
-    console.log("-------------");
-    console.log(sentence);
+    // console.log("-------------");
+    // console.log(sentence);
     lexer.reset(sentence);
     const tokens = Array.from(lexer);
     const words: string[] = tokens
