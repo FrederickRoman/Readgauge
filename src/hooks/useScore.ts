@@ -18,6 +18,7 @@ function useScore() {
   const [text, setText] = useState<string>("");
   const [score, setScore] = useState<number>(0);
   const [model, setModel] = useState<LayersModel | null>(null);
+  const [running, setRunning] = useState<boolean>(false);
 
   useEffect(() => {
     async function loadModel() {
@@ -51,19 +52,34 @@ function useScore() {
       }
     }
 
-    if (model) {
-      if (text) {
-        const sentences: string[] = sentenceTokenize(text);
-        const words: string[] = wordTokenize(text);
-        const textFeatures: ItextFeatures = Object.freeze({
-          totNumWords: words.length as number,
-          totNumSentences: sentences.length as number,
-          totNumSyllables: countSyllablesM(words, model) as number,
-        });
-        const fkGradeLevelScore: number = fkGradeLevel(textFeatures);
-        setScore(fkGradeLevelScore);
-      } else setScore(DEFAULT_SCORE);
+    async function computeScore(model: LayersModel | null, text: string) {
+      if (model) {
+        if (text) {
+          setRunning(true);
+          console.time("sentence tokenization");
+          const sentences: string[] = await sentenceTokenize(text);
+          console.timeEnd("sentence tokenization");
+          console.time("word tokenization");
+          const words: string[] = wordTokenize(text);
+          console.timeEnd("word tokenization");
+          console.time("syllable counting");
+          const totNumWords: number = words.length;
+          const totNumSentences: number = sentences.length;
+          const totNumSyllables: number = await countSyllablesM(words, model);
+          const textFeatures: ItextFeatures = Object.freeze({
+            totNumWords,
+            totNumSentences,
+            totNumSyllables,
+          });
+          console.timeEnd("syllable counting");
+          const fkGradeLevelScore: number = fkGradeLevel(textFeatures);
+          setScore(fkGradeLevelScore);
+          setRunning(false);
+        } else setScore(DEFAULT_SCORE);
+      }
     }
+
+    computeScore(model, text).catch((error) => console.log(error));
   }, [text, model]);
 
   useEffect(() => {
@@ -71,7 +87,7 @@ function useScore() {
     console.log(score);
   }, [score]);
 
-  return { text, setText, score, setScore };
+  return { text, setText, score, setScore, running };
 }
 
 export default useScore;

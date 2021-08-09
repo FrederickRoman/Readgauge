@@ -10,8 +10,8 @@ class ReadabilityService {
   //     "http://localhost:3000/neuralNet/model.json"
   //   );
   // }
-  score(text: string): number {
-    const sentences: string[] = TokenizationService.sentenceTokenize(text);
+  async score(text: string): Promise<number> {
+    const sentences: string[] = await TokenizationService.sentenceTokenize(text);
     const numOfSentences: number = sentences.length;
     let totalNumOfSyllables: number = 0;
 
@@ -28,8 +28,8 @@ class ReadabilityService {
     // console.log("SCORE", score);
     return score;
   }
-  static score(text: string): number {
-    const sentences: string[] = TokenizationService.sentenceTokenize(text);
+  static async score(text: string): Promise<number> {
+    const sentences: string[] = await TokenizationService.sentenceTokenize(text);
     const numOfSentences: number = sentences.length;
     let totalNumOfSyllables: number = 0;
 

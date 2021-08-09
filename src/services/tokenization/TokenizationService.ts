@@ -2,8 +2,10 @@ import SentenceTokenizerService from "./SentenceTokenizerService";
 import WordTokenizerService from "./WordTokenizerService";
 
 class TokenizationService {
-  static sentenceTokenize(text: string): string[] {
-    const sentenceTokens: string[] = SentenceTokenizerService.tokenize(text);
+  static async sentenceTokenize(text: string): Promise<string[]> {
+    const sentenceTokens: string[] = await SentenceTokenizerService.tokenize(
+      text
+    );
     console.log(sentenceTokens);
     return sentenceTokens;
   }

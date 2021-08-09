@@ -11,12 +11,10 @@ import ReadabilityActionType from "../../../types/unions/ReadabilityActionType";
 interface IRSinputSectionProps {
   text: string;
   setText: React.Dispatch<React.SetStateAction<string>>;
-  readability: IReadabilityState;
-  readabilityDispatch: React.Dispatch<ReadabilityActionType>;
 }
 
 function RSinputSection(props: IRSinputSectionProps): JSX.Element {
-  const { text, setText, readability, readabilityDispatch } = props;
+  const { text, setText } = props;
   return (
     <Container maxWidth="md">
       <Grid container>
@@ -25,8 +23,6 @@ function RSinputSection(props: IRSinputSectionProps): JSX.Element {
             <RStextInput
               text={text}
               setText={setText}
-              readability={readability}
-              readabilityDispatch={readabilityDispatch}
             />
           </Box>
         </Grid>

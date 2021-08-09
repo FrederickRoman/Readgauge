@@ -12,26 +12,58 @@ function isEndingWord(token: string): boolean {
   );
 }
 
+const workerPool: Worker[] = [];
+function clearWorkerPool(): void {
+  const numOfWorkers = workerPool.length;
+  if (numOfWorkers > 0)
+    for (let i = 0; i < numOfWorkers; i++) workerPool.pop()?.terminate();
+}
+
 class SentenceTokenizerService {
-  static tokenize(text: string): string[] {
-    const tokens: string[] = text.split(/\s+/);
-    const endingWords: string[] = [];
-    tokens.forEach((token) => {
-      if (isEndingWord(token)) {
-        endingWords.push(token);
+  static async tokenize(text: string): Promise<string[]> {
+    if (window.Worker) {
+      clearWorkerPool();
+      const workerURL = `${process.env.PUBLIC_URL}/worker/sentenceTokenizerWorker.js`;
+      const worker: Worker = new Worker(workerURL);
+      workerPool.push(worker);
+      console.log(`token worker pool size: ${workerPool.length}`);
+      const workerPromise: Promise<string[]> = new Promise(
+        (resolve, reject) => {
+          worker.postMessage({ text });
+          worker.onerror = reject;
+          worker.addEventListener("message", ({ data }) => {
+            resolve(data);
+          });
+        }
+      );
+
+      try {
+        const sentences = await workerPromise;
+        return sentences;
+      } catch (error) {
+        console.log(error);
+        return [];
       }
-    });
-    // console.log(endingWords);
-    const sentences: string[] = [];
-    let sentence: string = "";
-    tokens.forEach((token) => {
-      sentence += `${token} `;
-      if (endingWords.includes(token)) {
-        sentences.push(sentence);
-        sentence = "";
-      }
-    });
-    return sentences;
+    } else {
+      const tokens: string[] = text.split(/\s+/);
+      const endingWords: string[] = [];
+      tokens.forEach((token) => {
+        if (isEndingWord(token)) {
+          endingWords.push(token);
+        }
+      });
+      // console.log(endingWords);
+      const sentences: string[] = [];
+      let sentence: string = "";
+      tokens.forEach((token) => {
+        sentence += `${token} `;
+        if (endingWords.includes(token)) {
+          sentences.push(sentence);
+          sentence = "";
+        }
+      });
+      return sentences;
+    }
   }
 }
 

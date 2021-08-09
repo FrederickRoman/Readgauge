@@ -1,4 +1,4 @@
-import useReadabilityReducer from "../hooks/useReadabilityReducer";
+// import useReadabilityReducer from "../hooks/useReadabilityReducer";
 
 import RSinputSection from "../components/readScale/input/RSinputSection";
 import RSoutputSection from "../components/readScale/output/RSoutputSection";
@@ -10,12 +10,12 @@ import * as tf from "@tensorflow/tfjs";
 import useScore from "../hooks/useScore";
 
 function Home(): JSX.Element {
-  const [readability, readabilityDispatch] = useReadabilityReducer();
+  // const [readability, readabilityDispatch] = useReadabilityReducer();
   // const [text, setText] = useState<string>("");
   // const [score, setScore] = useState<number>(0);
   // const [model, setModel] = useState<tf.LayersModel | null>(null);
 
-  const { text, setText, score, setScore } = useScore();
+  const { text, setText, score, setScore, running } = useScore();
 
   // useEffect(() => {
   //   async function loadModel() {
@@ -37,10 +37,9 @@ function Home(): JSX.Element {
       <RSinputSection
         text={text}
         setText={setText}
-        readability={readability}
-        readabilityDispatch={readabilityDispatch}
       />
       <RSoutputSection score={score} />
+      <div> {running? 'running':'idle'}</div>
     </>
   );
 }

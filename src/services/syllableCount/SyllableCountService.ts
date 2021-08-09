@@ -34,6 +34,8 @@ function wordEncode(input: string): number[] {
   ];
 }
 
+const memoWordEncoder: (input: string) => number[] = memoize(wordEncode);
+
 function indexOfMax(arr: number[]): number {
   // console.log("arr.length");
   // console.log(arr.length);
@@ -99,21 +101,63 @@ function countSyllsSeq(words: string[], model: LayersModel): number {
 //   return count;
 // }
 
-function countSyllsParallel(words: string[], model: LayersModel): number {
+const workerPool: Worker[] = [];
+function clearWorkerPool(): void {
+  const numOfWorkers = workerPool.length;
+  if (numOfWorkers > 0)
+    for (let i = 0; i < numOfWorkers; i++) workerPool.pop()?.terminate();
+}
+
+async function countSyllsParallel(
+  words: string[],
+  model: LayersModel
+): Promise<number> {
   console.time("count 1");
-  const encodedWords: number[][] = words.map((word) => wordEncode(word));
+
+  const encodedWords: number[][] = [];
+  words.forEach((word: string): void => {
+    encodedWords.push(memoWordEncoder(word));
+  });
   const numOfInputs = encodedWords.length;
   const MAX_NUM_OF_CHARS: number = 33;
   const LENGTH_OF_CHAR_ENCODING: number = 5;
   const INPUT_LENGTH: number = MAX_NUM_OF_CHARS * LENGTH_OF_CHAR_ENCODING;
   const INPUT_SIZE: [number, number] = [numOfInputs, INPUT_LENGTH];
-  const totSyllableCount: number = tidy((): number => {
-    const inputTensor: Tensor2D = tensor2d(encodedWords, INPUT_SIZE);
-    const outputTensor = model.predict(inputTensor) as Tensor;
-    const outputArray = outputTensor.arraySync() as number[][];
-    const syllableCount: number[] = outputArray.map((t) => indexOfMax(t));
-    return syllableCount.reduce((acc, cur) => acc + cur);
-  });
+  // const DEFAUL_SYLLABLE_COUNT = 0;
+
+  let totSyllableCount: number = 0;
+
+  if (window.Worker) {
+    clearWorkerPool();
+    const workerURL = `${process.env.PUBLIC_URL}/worker/syllableCountPredictionWorker.js`;
+    const worker: Worker = new Worker(workerURL);
+    workerPool.push(worker);
+    console.log(`syllable worker pool size: ${workerPool.length}`);
+    const workerPromise: Promise<number> = new Promise((resolve, reject) => {
+      worker.postMessage({ encodedWords, INPUT_SIZE });
+      worker.onerror = reject;
+      worker.addEventListener("message", ({ data }) => {
+        resolve(data);
+      });
+    });
+
+    try {
+      totSyllableCount = await workerPromise;
+    } catch (error) {
+      console.log(error);
+    }
+  } else {
+    totSyllableCount = tidy((): number => {
+      const inputTensor: Tensor2D = tensor2d(encodedWords, INPUT_SIZE);
+      const outputTensor = model.predict(inputTensor) as Tensor2D;
+      const outputArray = outputTensor.arraySync() as number[][];
+      console.log("main thread outputArray");
+      console.log(outputArray);
+      const syllableCount: number[] = outputArray.map((t) => indexOfMax(t));
+      return syllableCount.reduce((acc, cur) => acc + cur);
+    });
+    console.log(`main thread count ${totSyllableCount}`);
+  }
   console.timeEnd("count 1");
   return totSyllableCount;
 }
@@ -134,12 +178,15 @@ class SyllableCountService {
     // console.log(syllableCount);
     return word.length;
   }
-  static countSyllablesM(words: string[], model: LayersModel): number {
-    const WORD_NUM_THRESHOLD = 1000;
+  static async countSyllablesM(
+    words: string[],
+    model: LayersModel
+  ): Promise<number> {
+    const WORD_NUM_THRESHOLD = 0; //1000;
     const numOfWords = words.length;
     return numOfWords < WORD_NUM_THRESHOLD
       ? countSyllsSeq(words, model)
-      : countSyllsParallel(words, model);
+      : await countSyllsParallel(words, model);
   }
   // static countSyllablesM(words: string[], model: LayersModel): number {
   //   const lenghtOfInput = 33 * 5;
