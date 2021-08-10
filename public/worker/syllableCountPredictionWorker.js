@@ -1,5 +1,7 @@
 importScripts("https://cdn.jsdelivr.net/npm/@tensorflow/tfjs/dist/tf.min.js");
 
+'use strict'
+
 function indexOfMax(arr) {
   var cur = Infinity;
   var max = -Infinity;

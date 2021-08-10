@@ -12,6 +12,16 @@ function isEndingWord(token: string): boolean {
   );
 }
 
+function hasEndingPunctuation(text: string) {
+  const trimmedText = text.trim();
+  return (
+    trimmedText.endsWith(".") ||
+    trimmedText.endsWith("?") ||
+    trimmedText.endsWith("!") ||
+    trimmedText.endsWith('?"')
+  );
+}
+
 const workerPool: Worker[] = [];
 function clearWorkerPool(): void {
   const numOfWorkers = workerPool.length;
@@ -21,6 +31,7 @@ function clearWorkerPool(): void {
 
 class SentenceTokenizerService {
   static async tokenize(text: string): Promise<string[]> {
+    const endedText = hasEndingPunctuation(text) ? text : `${text}.`;
     if (window.Worker) {
       clearWorkerPool();
       const workerURL = `${process.env.PUBLIC_URL}/worker/sentenceTokenizerWorker.js`;
@@ -29,7 +40,7 @@ class SentenceTokenizerService {
       console.log(`token worker pool size: ${workerPool.length}`);
       const workerPromise: Promise<string[]> = new Promise(
         (resolve, reject) => {
-          worker.postMessage({ text });
+          worker.postMessage({ text: endedText });
           worker.onerror = reject;
           worker.addEventListener("message", ({ data }) => {
             resolve(data);
@@ -45,7 +56,7 @@ class SentenceTokenizerService {
         return [];
       }
     } else {
-      const tokens: string[] = text.split(/\s+/);
+      const tokens: string[] = endedText.split(/\s+/);
       const endingWords: string[] = [];
       tokens.forEach((token) => {
         if (isEndingWord(token)) {

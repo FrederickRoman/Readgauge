@@ -60,7 +60,7 @@ function useScore() {
           const sentences: string[] = await sentenceTokenize(text);
           console.timeEnd("sentence tokenization");
           console.time("word tokenization");
-          const words: string[] = wordTokenize(text);
+          const words: string[] = await wordTokenize(text);
           console.timeEnd("word tokenization");
           console.time("syllable counting");
           const totNumWords: number = words.length;

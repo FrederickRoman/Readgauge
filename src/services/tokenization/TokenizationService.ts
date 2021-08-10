@@ -9,8 +9,8 @@ class TokenizationService {
     console.log(sentenceTokens);
     return sentenceTokens;
   }
-  static wordTokenize(sentence: string): string[] {
-    const wordTokens: string[] = WordTokenizerService.tokenize(sentence);
+  static  async wordTokenize(sentence: string): Promise<string[]> {
+    const wordTokens: string[] = await WordTokenizerService.tokenize(sentence);
     // console.log(wordTokens);
     return wordTokens;
   }

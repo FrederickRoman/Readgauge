@@ -1,4 +1,4 @@
-import moo from "moo";
+import { ErrorRule, error, compile, Lexer, Token } from "moo";
 
 type wordTokenizerRules = Readonly<{
   WS: RegExp;
@@ -13,7 +13,7 @@ type wordTokenizerRules = Readonly<{
     match: RegExp;
     lineBreaks: boolean;
   };
-  lexerError: moo.ErrorRule;
+  lexerError: ErrorRule;
 }>;
 
 const WORD_TOKENIZER_TYPES_REGEX: wordTokenizerRules = Object.freeze({
@@ -23,20 +23,53 @@ const WORD_TOKENIZER_TYPES_REGEX: wordTokenizerRules = Object.freeze({
   punctuation: /[.,/#!$%^&*;:{}=\-â€“_`~()?'[\]]/,
   NL: { match: /\n/, lineBreaks: true },
   default: { match: /[\s\S]/, lineBreaks: true },
-  lexerError: moo.error,
+  lexerError: error,
 });
-const lexer: moo.Lexer = moo.compile(WORD_TOKENIZER_TYPES_REGEX);
+const lexer: Lexer = compile(WORD_TOKENIZER_TYPES_REGEX);
+
+const workerPool: Worker[] = [];
+function clearWorkerPool(): void {
+  const numOfWorkers = workerPool.length;
+  if (numOfWorkers > 0)
+    for (let i = 0; i < numOfWorkers; i++) workerPool.pop()?.terminate();
+}
 
 class WordTokenizerService {
-  static tokenize(sentence: string): string[] {
+  static async tokenize(sentence: string): Promise<string[]> {
     // console.log("-------------");
     // console.log(sentence);
-    lexer.reset(sentence);
-    const tokens = Array.from(lexer);
-    const words: string[] = tokens
-      .filter(({ type }) => type === "word")
-      .map(({ text }) => text);
-    return words;
+    if (window.Worker) {
+      clearWorkerPool();
+      const workerURL = `${process.env.PUBLIC_URL}/worker/wordTokenizerWorker.js`;
+      const worker: Worker = new Worker(workerURL);
+      workerPool.push(worker);
+      console.log(`token worker pool size: ${workerPool.length}`);
+      const workerPromise: Promise<string[]> = new Promise(
+        (resolve, reject) => {
+          worker.postMessage({ sentence });
+          worker.onerror = reject;
+          worker.addEventListener("message", ({ data }) => {
+            resolve(data);
+          });
+        }
+      );
+
+      try {
+        const sentences = await workerPromise;
+        return sentences;
+      } catch (error) {
+        console.log(error);
+        return [];
+      }
+    } else {
+      lexer.reset(sentence);
+      const tokens: Token[] = Array.from(lexer);
+      const words: string[] = [];
+      tokens.forEach(({ type, text }) => {
+        if (type === "word") words.push(text);
+      });
+      return words;
+    }
   }
 }
 

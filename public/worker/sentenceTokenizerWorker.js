@@ -1,3 +1,5 @@
+'use strict'
+
 function isAnAbbreviation(token) {
   var abbrevationList = Object.freeze(["Mr.", "Mrs."]);
   return abbrevationList.includes(token);

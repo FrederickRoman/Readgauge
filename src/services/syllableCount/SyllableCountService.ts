@@ -1,12 +1,4 @@
-import {
-  LayersModel,
-  tensor,
-  tensor1d,
-  tensor2d,
-  Tensor,
-  Tensor2D,
-  tidy,
-} from "@tensorflow/tfjs";
+import { LayersModel, tensor2d, Tensor2D, tidy } from "@tensorflow/tfjs";
 
 import memoize from "fast-memoize";
 
@@ -64,7 +56,7 @@ function countSyllsSeq(words: string[], model: LayersModel): number {
     tidy((): number => {
       const encodedWord: number[] = wordEncode(word);
       const inputTensor: Tensor2D = tensor2d(encodedWord, INPUT_SIZE);
-      const outputTensor = model.predict(inputTensor) as Tensor;
+      const outputTensor = model.predict(inputTensor) as Tensor2D;
       const outputArray = outputTensor.arraySync() as number[][];
       const syllableCount: number = indexOfMax(outputArray[0]);
       return syllableCount;
@@ -182,7 +174,7 @@ class SyllableCountService {
     words: string[],
     model: LayersModel
   ): Promise<number> {
-    const WORD_NUM_THRESHOLD = 0; //1000;
+    const WORD_NUM_THRESHOLD = 100;//1000;
     const numOfWords = words.length;
     return numOfWords < WORD_NUM_THRESHOLD
       ? countSyllsSeq(words, model)
