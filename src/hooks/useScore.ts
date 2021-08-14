@@ -5,8 +5,10 @@ import { loadLayersModel, LayersModel } from "@tensorflow/tfjs";
 import TokenizationService from "../services/tokenization/TokenizationService";
 import SyllableCountService from "../services/syllableCount/SyllableCountService";
 
-const { wordTokenize, sentenceTokenize } = TokenizationService;
-const { countSyllablesM } = SyllableCountService;
+const { tokenizeToWords, tokenizeToSentences } = TokenizationService;
+const { countSyllables } = SyllableCountService;
+
+type model = LayersModel | null;
 
 interface ItextFeatures {
   totNumWords: number;
@@ -17,7 +19,7 @@ interface ItextFeatures {
 function useScore() {
   const [text, setText] = useState<string>("");
   const [score, setScore] = useState<number>(0);
-  const [model, setModel] = useState<LayersModel | null>(null);
+  const [model, setModel] = useState<model>(null);
   const [running, setRunning] = useState<boolean>(false);
 
   useEffect(() => {
@@ -52,28 +54,37 @@ function useScore() {
       }
     }
 
-    async function computeScore(model: LayersModel | null, text: string) {
+    async function computeScore(model: model, text: string): Promise<void> {
       if (model) {
         if (text) {
           setRunning(true);
-          console.time("sentence tokenization");
-          const sentences: string[] = await sentenceTokenize(text);
-          console.timeEnd("sentence tokenization");
-          console.time("word tokenization");
-          const words: string[] = await wordTokenize(text);
-          console.timeEnd("word tokenization");
-          console.time("syllable counting");
+          console.time("computing score");
+          console.time("tokenization");
+          const tokenizing: Promise<string[]>[] = [
+            tokenizeToSentences(text),
+            tokenizeToWords(text),
+          ];
+          const [sentences, words]: string[][] = await Promise.all(tokenizing);
+          console.timeEnd("tokenization");
+
+          const countPredInput = { words, model };
           const totNumWords: number = words.length;
           const totNumSentences: number = sentences.length;
-          const totNumSyllables: number = await countSyllablesM(words, model);
+          console.time("syllable counting");
+          const totNumSyllables: number = await countSyllables(countPredInput);
+          console.timeEnd("syllable counting");
+
           const textFeatures: ItextFeatures = Object.freeze({
             totNumWords,
             totNumSentences,
             totNumSyllables,
           });
-          console.timeEnd("syllable counting");
+
+          console.time("formula application");
           const fkGradeLevelScore: number = fkGradeLevel(textFeatures);
+          console.timeEnd("formula application");
           setScore(fkGradeLevelScore);
+          console.timeEnd("computing score");
           setRunning(false);
         } else setScore(DEFAULT_SCORE);
       }

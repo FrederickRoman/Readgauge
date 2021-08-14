@@ -1,3 +1,9 @@
+import WorkerPoolingService from "../workerPooling/WorkerPoolingService";
+
+const WORKER_URL =
+  `${process.env.PUBLIC_URL}/worker/sentenceTokenizerWorker.js` as const;
+const workerPool = new WorkerPoolingService(WORKER_URL);
+
 function isAnAbbreviation(token: string): boolean {
   const abbrevationList: readonly string[] = Object.freeze(["Mr.", "Mrs."]);
   return abbrevationList.includes(token);
@@ -12,7 +18,7 @@ function isEndingWord(token: string): boolean {
   );
 }
 
-function hasEndingPunctuation(text: string) {
+function hasEndingPunctuation(text: string): boolean {
   const trimmedText = text.trim();
   return (
     trimmedText.endsWith(".") ||
@@ -22,59 +28,41 @@ function hasEndingPunctuation(text: string) {
   );
 }
 
-const workerPool: Worker[] = [];
-function clearWorkerPool(): void {
-  const numOfWorkers = workerPool.length;
-  if (numOfWorkers > 0)
-    for (let i = 0; i < numOfWorkers; i++) workerPool.pop()?.terminate();
+function mainThreadSentenceTokenize(text: string): string[] {
+  const tokens: string[] = text.split(/\s+/);
+  const endingWords: string[] = [];
+  tokens.forEach((token) => {
+    if (isEndingWord(token)) {
+      endingWords.push(token);
+    }
+  });
+  // console.log(endingWords);
+  const sentences: string[] = [];
+  let sentence: string = "";
+  tokens.forEach((token) => {
+    sentence += `${token} `;
+    if (endingWords.includes(token)) {
+      sentences.push(sentence);
+      sentence = "";
+    }
+  });
+  return sentences;
 }
 
 class SentenceTokenizerService {
   static async tokenize(text: string): Promise<string[]> {
-    const endedText = hasEndingPunctuation(text) ? text : `${text}.`;
-    if (window.Worker) {
-      clearWorkerPool();
-      const workerURL = `${process.env.PUBLIC_URL}/worker/sentenceTokenizerWorker.js`;
-      const worker: Worker = new Worker(workerURL);
-      workerPool.push(worker);
-      console.log(`token worker pool size: ${workerPool.length}`);
-      const workerPromise: Promise<string[]> = new Promise(
-        (resolve, reject) => {
-          worker.postMessage({ text: endedText });
-          worker.onerror = reject;
-          worker.addEventListener("message", ({ data }) => {
-            resolve(data);
-          });
-        }
-      );
-
-      try {
-        const sentences = await workerPromise;
-        return sentences;
-      } catch (error) {
-        console.log(error);
-        return [];
-      }
-    } else {
-      const tokens: string[] = endedText.split(/\s+/);
-      const endingWords: string[] = [];
-      tokens.forEach((token) => {
-        if (isEndingWord(token)) {
-          endingWords.push(token);
-        }
-      });
-      // console.log(endingWords);
-      const sentences: string[] = [];
-      let sentence: string = "";
-      tokens.forEach((token) => {
-        sentence += `${token} `;
-        if (endingWords.includes(token)) {
-          sentences.push(sentence);
-          sentence = "";
-        }
-      });
-      return sentences;
+    const endedText: string = hasEndingPunctuation(text) ? text : `${text}.`;
+    let sentences: string[] = [];
+    try {
+      const tokenizeJobPromise: (data: { text: string }) => Promise<string[]> =
+        workerPool.jobPromise.bind(workerPool);
+      sentences = await tokenizeJobPromise({ text: endedText });
+    } catch (error) {
+      console.log(error);
+      console.log("Fall back to main thread execution");
+      sentences = mainThreadSentenceTokenize(endedText);
     }
+    return sentences;
   }
 }
 
