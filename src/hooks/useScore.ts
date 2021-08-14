@@ -23,13 +23,12 @@ function useScore() {
   const [running, setRunning] = useState<boolean>(false);
 
   useEffect(() => {
-    async function loadModel() {
-      const ROOT_DIR: string = "http://localhost:3000";
-      const MODEL_PUBLIC_DIR: string = `${ROOT_DIR}/neuralNet/model.json`;
+    async function loadModel(): Promise<void> {
+      const MODEL_PUBLIC_DIR = `${process.env.PUBLIC_URL}/neuralNet/model.json`;
       const model: LayersModel = await loadLayersModel(MODEL_PUBLIC_DIR);
       setModel(model);
     }
-    loadModel();
+    loadModel().catch((error) => console.log(error));
     return () => setModel(null);
   }, []);
 
@@ -39,11 +38,6 @@ function useScore() {
     function fkGradeLevel(textFeatures: ItextFeatures): number {
       const { totNumWords, totNumSentences, totNumSyllables } = textFeatures;
       if (totNumWords > 0 && totNumSentences > 0) {
-        // const fkGradeLevelScore: number =
-        //   0.39 * (totNumWords / totNumSentences) +
-        //   11.8 * (totNumSyllables / totNumWords) -
-        //   15.59;
-        // return fkGradeLevelScore;
         const fkGradeLevelScore: number =
           206.835 -
           1.015 * (totNumWords / totNumSentences) -
@@ -55,38 +49,39 @@ function useScore() {
     }
 
     async function computeScore(model: model, text: string): Promise<void> {
-      if (model) {
-        if (text) {
-          setRunning(true);
-          console.time("computing score");
-          console.time("tokenization");
-          const tokenizing: Promise<string[]>[] = [
-            tokenizeToSentences(text),
-            tokenizeToWords(text),
-          ];
-          const [sentences, words]: string[][] = await Promise.all(tokenizing);
-          console.timeEnd("tokenization");
+      if (model && text) {
+        setRunning(true);
+        console.time("computing score");
+        console.time("tokenization");
+        const tokenizing: Promise<string[]>[] = [
+          tokenizeToSentences(text),
+          tokenizeToWords(text),
+        ];
+        const [sentences, words]: string[][] = await Promise.all(tokenizing);
+        console.timeEnd("tokenization");
 
-          const countPredInput = { words, model };
-          const totNumWords: number = words.length;
-          const totNumSentences: number = sentences.length;
-          console.time("syllable counting");
-          const totNumSyllables: number = await countSyllables(countPredInput);
-          console.timeEnd("syllable counting");
+        const countPredInput = { words, model };
+        const totNumWords: number = words.length;
+        const totNumSentences: number = sentences.length;
+        console.time("syllable counting");
+        const totNumSyllables: number = await countSyllables(countPredInput);
+        console.timeEnd("syllable counting");
 
-          const textFeatures: ItextFeatures = Object.freeze({
-            totNumWords,
-            totNumSentences,
-            totNumSyllables,
-          });
+        const textFeatures: ItextFeatures = Object.freeze({
+          totNumWords,
+          totNumSentences,
+          totNumSyllables,
+        });
 
-          console.time("formula application");
-          const fkGradeLevelScore: number = fkGradeLevel(textFeatures);
-          console.timeEnd("formula application");
-          setScore(fkGradeLevelScore);
-          console.timeEnd("computing score");
-          setRunning(false);
-        } else setScore(DEFAULT_SCORE);
+        console.time("formula application");
+        const fkGradeLevelScore: number = fkGradeLevel(textFeatures);
+        console.timeEnd("formula application");
+        setScore(fkGradeLevelScore);
+        console.timeEnd("computing score");
+        setRunning(false);
+      } else {
+        setScore(DEFAULT_SCORE);
+        setRunning(false);
       }
     }
 

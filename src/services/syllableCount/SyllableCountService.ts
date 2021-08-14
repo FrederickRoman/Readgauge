@@ -10,7 +10,7 @@ interface ICountSyllablesArgs {
 class SyllableCountService {
   static async countSyllables(args: ICountSyllablesArgs): Promise<number> {
     const { words, model } = args;
-    const COUNTING_MODE_THRESHOLD = 0; //1000;
+    const COUNTING_MODE_THRESHOLD = 1000;
     const numOfWords = words.length;
     const predictionCountInput = { words, model };
     return numOfWords < COUNTING_MODE_THRESHOLD

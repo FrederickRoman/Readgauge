@@ -1,7 +1,6 @@
 import WorkerPoolingService from "../workerPooling/WorkerPoolingService";
 
-const WORKER_URL =
-  `${process.env.PUBLIC_URL}/worker/sentenceTokenizerWorker.js` as const;
+const WORKER_URL = `${process.env.PUBLIC_URL}/worker/sentenceTokenizerWorker.js`;
 const workerPool = new WorkerPoolingService(WORKER_URL);
 
 function isAnAbbreviation(token: string): boolean {

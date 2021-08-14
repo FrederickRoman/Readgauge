@@ -14,13 +14,13 @@ interface IParallelCountArgs {
   model: LayersModel;
 }
 
-const WORKER_URL =
-  `${process.env.PUBLIC_URL}/worker/syllableCountPredictionWorker.js` as const;
+const WORKER_URL = `${process.env.PUBLIC_URL}/worker/syllableCountPredictionWorker.js`;
 const workerPool = new WorkerPoolingService(WORKER_URL);
 
 const memoWordEncoder: (word: string) => number[] =
-  Preprocessing.memoWordEncoder;
-const indexOfMax: (arr: number[]) => number = Postprocessing.indexOfMax;
+  Preprocessing.memoWordEncoder.bind(Preprocessing);
+const indexOfMax: (arr: number[]) => number =
+  Postprocessing.indexOfMax.bind(Postprocessing);
 
 function mainThreadParallelCount(args: IMainThreadParlCountArgs): number {
   const { encodedWords, INPUT_SIZE, model } = args;

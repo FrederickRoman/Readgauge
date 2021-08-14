@@ -5,15 +5,12 @@ import Box from "@material-ui/core/Box";
 import RStextInput from "./text/RStextInputSection";
 import RSfileUpload from "./file/RSfileInputSection";
 
-import IReadabilityState from "../../../types/interfaces/IReadabilityState";
-import ReadabilityActionType from "../../../types/unions/ReadabilityActionType";
-
-interface IRSinputSectionProps {
+interface IProps {
   text: string;
   setText: React.Dispatch<React.SetStateAction<string>>;
 }
 
-function RSinputSection(props: IRSinputSectionProps): JSX.Element {
+function RSinputSection(props: IProps): JSX.Element {
   const { text, setText } = props;
   return (
     <Container maxWidth="md">

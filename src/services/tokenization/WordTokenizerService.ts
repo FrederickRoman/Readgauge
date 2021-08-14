@@ -1,8 +1,7 @@
 import { error, compile, Lexer, Token } from "moo";
 import WorkerPoolingService from "../workerPooling/WorkerPoolingService";
 
-const WORKER_URL =
-  `${process.env.PUBLIC_URL}/worker/wordTokenizerWorker.js` as const;
+const WORKER_URL = `${process.env.PUBLIC_URL}/worker/wordTokenizerWorker.js`;
 const workerPool = new WorkerPoolingService(WORKER_URL);
 
 const WORD_TOKENIZER_TYPES_REGEX = Object.freeze({
