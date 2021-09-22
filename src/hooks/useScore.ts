@@ -4,17 +4,15 @@ import { loadLayersModel, LayersModel } from "@tensorflow/tfjs";
 
 import TokenizationService from "../services/tokenization/TokenizationService";
 import SyllableCountService from "../services/syllableCount/SyllableCountService";
+import FleshReadingEaseService from "../services/readability/scales/fleschReadingEase/FleshReadingEaseService";
+
+import ItextFeatures from "../types/interfaces/ItextFeatures";
 
 const { tokenizeToWords, tokenizeToSentences } = TokenizationService;
 const { countSyllables } = SyllableCountService;
+const { fkGradeLevel } = FleshReadingEaseService;
 
 type model = LayersModel | null;
-
-interface ItextFeatures {
-  totNumWords: number;
-  totNumSentences: number;
-  totNumSyllables: number;
-}
 
 function useScore() {
   const [text, setText] = useState<string>("");
@@ -33,22 +31,8 @@ function useScore() {
   }, []);
 
   useEffect(() => {
-    const DEFAULT_SCORE = Infinity;
-
-    function fkGradeLevel(textFeatures: ItextFeatures): number {
-      const { totNumWords, totNumSentences, totNumSyllables } = textFeatures;
-      if (totNumWords > 0 && totNumSentences > 0) {
-        const fkGradeLevelScore: number =
-          206.835 -
-          1.015 * (totNumWords / totNumSentences) -
-          84.6 * (totNumSyllables / totNumWords);
-        return fkGradeLevelScore;
-      } else {
-        return DEFAULT_SCORE;
-      }
-    }
-
     async function computeScore(model: model, text: string): Promise<void> {
+      const DEFAULT_SCORE = Infinity;
       if (model && text) {
         setRunning(true);
         console.time("computing score");
