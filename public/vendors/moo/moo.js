@@ -51,7 +51,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     function isObject(o) { return o && typeof o === 'object' && !isRegExp(o) && !Array.isArray(o) }
   
     function reEscape(s) {
-      return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')
+      return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
     }
     function reGroups(s) {
       var re = new RegExp('|' + s)

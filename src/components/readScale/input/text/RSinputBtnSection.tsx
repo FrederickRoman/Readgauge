@@ -1,5 +1,5 @@
-import IconButton from "@material-ui/core/IconButton";
-import DeleteIcon from "@material-ui/icons/Delete";
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 interface IProps {
   setText: React.Dispatch<React.SetStateAction<string>>;
@@ -11,7 +11,7 @@ function RSinputBtnSection(props: IProps): JSX.Element {
   const handleClick = (): void => setText("");
 
   return (
-    <IconButton name="clear" aria-label="delete" onClick={handleClick}>
+    <IconButton name="clear" aria-label="delete" onClick={handleClick} size="large">
       <DeleteIcon />
     </IconButton>
   );

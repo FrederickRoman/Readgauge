@@ -1,10 +1,12 @@
 import React from "react";
-import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-// import IconButton from "@material-ui/core/IconButton";
-// import PhotoCamera from "@material-ui/icons/PhotoCamera";
+import { Theme } from "@mui/material/styles";
+import makeStyles from '@mui/styles/makeStyles';
+import createStyles from '@mui/styles/createStyles';
+import Button from "@mui/material/Button";
+// import IconButton from "@mui/material/IconButton";
+// import PhotoCamera from "@mui/icons-material/PhotoCamera";
 
-import FolderOpenIcon from "@material-ui/icons/FolderOpen";
+import FolderOpenIcon from "@mui/icons-material/FolderOpen";
 
 import { Ifile } from "../../../../types/interfaces/Ifile";
 
@@ -12,7 +14,7 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       "& > *": {
-        margin: theme.spacing(1),
+        // margin: theme.spacing(1),
       },
     },
     input: {
