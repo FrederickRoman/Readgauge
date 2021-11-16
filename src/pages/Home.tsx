@@ -25,7 +25,7 @@ function Home(): JSX.Element {
         </Grid>
       </Container>
 
-      <RSfileInputSection />
+      <RSfileInputSection setText={setText}/>
       <div> {running ? "running" : "idle"}</div>
     </>
   );

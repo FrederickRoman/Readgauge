@@ -4,12 +4,18 @@ import RSfileDrop from "./RSfileDrop";
 
 import { Ifile } from "../../../../types/interfaces/Ifile";
 
-function RSfileInputSection() {
+interface IProps {
+  setText: React.Dispatch<React.SetStateAction<string>>;
+}
+
+function RSfileInputSection(props: IProps) {
+  const { setText } = props;
   const DEFAULT_FILE: Ifile = { name: "", content: "" };
   const [fileUpload, setFileUpload] = useState<Ifile>(DEFAULT_FILE);
 
   useEffect(() => {
-    console.log(JSON.stringify(fileUpload, null, " "));
+    const text = fileUpload.content;
+    setText(text);
   }, [fileUpload]);
 
   return (
