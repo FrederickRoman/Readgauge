@@ -32,44 +32,49 @@ function useScore() {
 
   useEffect(() => {
     async function computeScore(model: model, text: string): Promise<void> {
-      const DEFAULT_SCORE = Infinity;
-      if (model && text) {
-        setRunning(true);
-        console.time("computing score");
-        console.time("tokenization");
-        const tokenizing: Promise<string[]>[] = [
-          tokenizeToSentences(text),
-          tokenizeToWords(text),
-        ];
-        const [sentences, words]: string[][] = await Promise.all(tokenizing);
-        console.timeEnd("tokenization");
+      try {
+        if (model && text) {
+          setRunning(true);
+          console.time("computing score");
+          console.time("tokenization");
+          const tokenizing: Promise<string[]>[] = [
+            tokenizeToSentences(text),
+            tokenizeToWords(text),
+          ];
+          const [sentences, words]: string[][] = await Promise.all(tokenizing);
+          console.timeEnd("tokenization");
 
-        const countPredInput = { words, model };
-        const totNumWords: number = words.length;
-        const totNumSentences: number = sentences.length;
-        console.time("syllable counting");
-        const totNumSyllables: number = await countSyllables(countPredInput);
-        console.timeEnd("syllable counting");
+          const countPredInput = { words, model };
+          const totNumWords: number = words.length;
+          const totNumSentences: number = sentences.length;
+          console.time("syllable counting");
+          const totNumSyllables: number = await countSyllables(countPredInput);
+          console.timeEnd("syllable counting");
 
-        const textFeatures: ItextFeatures = Object.freeze({
-          totNumWords,
-          totNumSentences,
-          totNumSyllables,
-        });
+          const textFeatures: ItextFeatures = Object.freeze({
+            totNumWords,
+            totNumSentences,
+            totNumSyllables,
+          });
 
-        console.time("formula application");
-        const fkGradeLevelScore: number = fkGradeLevel(textFeatures);
-        console.timeEnd("formula application");
-        setScore(fkGradeLevelScore);
-        console.timeEnd("computing score");
-        setRunning(false);
-      } else {
-        setScore(DEFAULT_SCORE);
+          console.time("formula application");
+          const fkGradeLevelScore: number = fkGradeLevel(textFeatures);
+          console.timeEnd("formula application");
+          setScore(fkGradeLevelScore);
+          console.timeEnd("computing score");
+          setRunning(false);
+        } else {
+          setScore(Infinity);
+          setRunning(false);
+        }
+      } catch (error) {
+        setScore(Infinity);
         setRunning(false);
       }
     }
 
-    computeScore(model, text).catch((error) => console.log(error));
+    const timeoutId = setTimeout(() => computeScore(model, text), 300);
+    return () => clearTimeout(timeoutId);
   }, [text, model]);
 
   useEffect(() => {
