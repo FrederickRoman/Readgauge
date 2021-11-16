@@ -1,6 +1,7 @@
 import React from "react";
 import RSinputTextField from "./RSinputTextField";
 import RSinputBtnSection from "./RSinputBtnSection";
+import Grid from "@mui/material/Grid";
 
 interface IProps {
   text: string;
@@ -11,10 +12,19 @@ function RStextInputSection(props: IProps): JSX.Element {
   const { text, setText } = props;
 
   return (
-    <>
-      <RSinputTextField text={text} setText={setText} />
-      <RSinputBtnSection setText={setText} />
-    </>
+    <Grid
+      container
+      flexDirection="column"
+      justifyContent="center"
+      alignItems="center"
+    >
+      <Grid item>
+        <RSinputTextField text={text} setText={setText} />
+      </Grid>
+      <Grid item>
+        <RSinputBtnSection setText={setText} />
+      </Grid>
+    </Grid>
   );
 }
 
