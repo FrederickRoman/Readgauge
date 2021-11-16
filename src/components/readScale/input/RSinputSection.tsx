@@ -12,25 +12,7 @@ interface IProps {
 
 function RSinputSection(props: IProps): JSX.Element {
   const { text, setText } = props;
-  return (
-    <Container maxWidth="md">
-      <Grid container>
-        <Grid item xs={12} sm={6}>
-          <Box component="span" m={5}>
-            <RStextInput
-              text={text}
-              setText={setText}
-            />
-          </Box>
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <Box component="span" m={5}>
-            <RSfileUpload />
-          </Box>
-        </Grid>
-      </Grid>
-    </Container>
-  );
+  return <RStextInput text={text} setText={setText} />;
 }
 
 export default RSinputSection;
