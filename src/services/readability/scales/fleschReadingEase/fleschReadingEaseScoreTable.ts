@@ -12,7 +12,7 @@ type freScoreDescription = {
 const fleschReadingEaseScoreTable: readonly freScoreDescription[] = [
   {
     range: { min: 90, max: 100 },
-    schoolLevel: "5h grade",
+    schoolLevel: "5th grade",
     description:
       "Very easy to read. Easily understood by an average 11-year-old student.",
   },
@@ -28,13 +28,13 @@ const fleschReadingEaseScoreTable: readonly freScoreDescription[] = [
   },
   {
     range: { min: 60, max: 70 },
-    schoolLevel: "8th & 9th grade",
+    schoolLevel: "8th-9th grade",
     description:
       "Plain English. Easily understood by 13- to 15-year-old students.",
   },
   {
     range: { min: 50, max: 60 },
-    schoolLevel: "10th to 12th grade",
+    schoolLevel: "10th-12th grade",
     description: "Fairly difficult to read.",
   },
   {
