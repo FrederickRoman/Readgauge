@@ -1,6 +1,6 @@
 importScripts("https://cdn.jsdelivr.net/npm/@tensorflow/tfjs/dist/tf.min.js");
 
-'use strict'
+("use strict");
 
 function indexOfMax(arr) {
   var cur = Infinity;
@@ -24,19 +24,24 @@ self.addEventListener("message", function (event) {
 
   var MODEL_PUBLIC_DIR = "../neuralNet/model.json";
   var totSyllCount = 0;
+  var inputTensor = null;
+  var outputTensor = null;
   tf.loadLayersModel(MODEL_PUBLIC_DIR)
     .then(function (model) {
-      var inputTensor = tf.tensor2d(encodedWords, INPUT_SIZE);
-      var outputTensor = model.predict(inputTensor);
-      inputTensor.dispose();
-      var outputArray = outputTensor.arraySync();
-      outputTensor.dispose();
-      outputArray.forEach(function (outWordPred) {
-        totSyllCount += indexOfMax(outWordPred);
+      inputTensor = tf.tensor2d(encodedWords, INPUT_SIZE);
+      outputTensor = model.predict(inputTensor);
+      outputTensor.array().then(function (outputArray) {
+        outputArray.forEach(function (outWordPred) {
+          totSyllCount += indexOfMax(outWordPred);
+        });
+        postMessage(totSyllCount);
       });
-      postMessage(totSyllCount);
     })
     .catch(function (error) {
       console.log(error);
+    })
+    .finally(function () {
+      if (inputTensor) inputTensor.dispose();
+      if (outputTensor) outputTensor.dispose();
     });
 });
