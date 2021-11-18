@@ -13,7 +13,7 @@ class FleshReadingEaseService {
     const SCORE_TO_SCHOOL_LEVEL_MAX = 100;
     const SCORE_TO_SCHOOL_LEVEL_MIN = 0;
     if (score > SCORE_TO_SCHOOL_LEVEL_MAX) {
-      scoreSchoolLevel = "Below 5h grade";
+      scoreSchoolLevel = "Below 5th grade";
       scoreSchoolDescription = "Extremely easy to read.";
     } else if (score <= SCORE_TO_SCHOOL_LEVEL_MIN) {
       scoreSchoolLevel = "Professional";
