@@ -1,51 +1,74 @@
-import React from "react";
-import { Theme } from "@mui/material/styles";
-import createStyles from "@mui/styles/createStyles";
-import makeStyles from "@mui/styles/makeStyles";
+import { Link } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
+import HelpIcon from "@mui/icons-material/Help";
+import { createStyles, makeStyles } from "@mui/styles";
 
-const useStyles = makeStyles((theme: Theme) =>
+import logo from "../../assets/img/logo.svg";
+
+const useStyles = makeStyles(() =>
   createStyles({
-    root: {
-      flexGrow: 1,
-    },
-    menuButton: {
-      // marginRight: theme.spacing(2),
+    link: {
+      color: "white",
+      textDecoration: "none",
     },
     title: {
-      flexGrow: 1,
+      color: "white",
     },
   })
 );
 
-function MainBar() {
+function HomeLink(): JSX.Element {
   const classes = useStyles();
-
   return (
-    <div className={classes.root}>
-      <AppBar position="static">
-        <Toolbar>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="menu"
-            size="large"
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" className={classes.title}>
-            Readscale
-          </Typography>
-          <Button color="inherit">About</Button>
-        </Toolbar>
-      </AppBar>
-    </div>
+    <Box>
+      <Link to="/" className={classes.link} aria-label="home">
+        <Button>
+          <Grid container justifyContent="center" alignItems="center">
+            <Grid item>
+              <img src={logo} alt="readgauge logo" width="40" height="40" />
+            </Grid>
+            <Grid item>
+              <Typography variant="h6" className={classes.title}>
+                Readguage
+              </Typography>
+            </Grid>
+          </Grid>
+        </Button>
+      </Link>
+    </Box>
+  );
+}
+
+function AboutLink(): JSX.Element {
+  return (
+    <Box>
+      <Link to="/about">
+        <IconButton size="medium" aria-label="about">
+          <HelpIcon color="secondary" />
+        </IconButton>
+      </Link>
+    </Box>
+  );
+}
+
+function MainBar(): JSX.Element {
+  return (
+    <AppBar position="static">
+      <Toolbar>
+        <Grid container justifyContent="space-between" alignItems="center">
+          <Grid item>
+            <HomeLink />
+          </Grid>
+          <Grid item>{/* <AboutLink /> */}</Grid>
+        </Grid>
+      </Toolbar>
+    </AppBar>
   );
 }
 
