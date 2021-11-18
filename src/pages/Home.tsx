@@ -5,11 +5,13 @@ import RSfileInputSection from "../components/readScale/input/file/RSfileInputSe
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
+import HeroBanner from "../components/banner/HeroBanner";
 
 function Home(): JSX.Element {
   const { text, setText, score, running } = useScore();
   return (
     <>
+      <HeroBanner />
       <Container maxWidth="md">
         <Grid container>
           <Grid item xs={12} sm={6}>
@@ -19,14 +21,16 @@ function Home(): JSX.Element {
           </Grid>
           <Grid item xs={12} sm={6}>
             <Box component="span" m={5}>
-              <RSoutputSection score={score} />
+              <RSoutputSection score={score} running={running} />
+            </Box>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Box component="span" m={5}>
+              <RSfileInputSection setText={setText} />
             </Box>
           </Grid>
         </Grid>
       </Container>
-
-      <RSfileInputSection setText={setText}/>
-      <div> {running ? "running" : "idle"}</div>
     </>
   );
 }

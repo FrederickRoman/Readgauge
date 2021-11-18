@@ -7,14 +7,15 @@ import FleshReadingEaseService from "../../../../services/readability/scales/fle
 
 interface IProps {
   score: number;
+  running: boolean;
 }
 
 const { scoreToUSschoolLevel } = FleshReadingEaseService;
 
 function CircularProgressWithLabel(
-  props: CircularProgressProps & { score: number }
+  props: CircularProgressProps & { score: number; running: boolean }
 ) {
-  const { score } = props;
+  const { score, running } = props;
   const value = 100 - Math.min(Math.max(0, score), 100);
   const { scoreSchoolLevel } = scoreToUSschoolLevel(score);
 
@@ -24,12 +25,7 @@ function CircularProgressWithLabel(
       display="inline-flex"
       style={{ border: "3px solid green", borderRadius: "50%" }}
     >
-      <CircularProgress
-        variant="determinate"
-        size={256}
-        value={value}
-        {...props}
-      />
+      <CircularProgress variant="determinate" size={180} value={value} />
       <Box
         top={0}
         left={0}
@@ -47,7 +43,7 @@ function CircularProgressWithLabel(
           color="textSecondary"
           style={{ fontSize: "1.3em" }}
         >
-          {scoreSchoolLevel}
+          {running ? "Calculating..." : scoreSchoolLevel}
         </Typography>
       </Box>
     </Box>
@@ -55,7 +51,7 @@ function CircularProgressWithLabel(
 }
 
 export default function CircularStatic(props: IProps) {
-  const { score } = props;
+  const { score, running } = props;
 
-  return <CircularProgressWithLabel score={score} />;
+  return <CircularProgressWithLabel score={score} running={running} />;
 }

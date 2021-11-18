@@ -1,7 +1,7 @@
 import React from "react";
 import { Theme } from "@mui/material/styles";
-import makeStyles from '@mui/styles/makeStyles';
-import createStyles from '@mui/styles/createStyles';
+import makeStyles from "@mui/styles/makeStyles";
+import createStyles from "@mui/styles/createStyles";
 import Button from "@mui/material/Button";
 // import IconButton from "@mui/material/IconButton";
 // import PhotoCamera from "@mui/icons-material/PhotoCamera";
@@ -9,6 +9,7 @@ import Button from "@mui/material/Button";
 import FolderOpenIcon from "@mui/icons-material/FolderOpen";
 
 import { Ifile } from "../../../../types/interfaces/Ifile";
+import Grid from "@mui/material/Grid";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -56,26 +57,29 @@ function RSfileUpload(props: IRSfileUploadProps) {
   };
 
   return (
-    <div className={classes.root}>
-      <input
-        accept=".txt"
-        className={classes.input}
-        id="contained-button-file"
-        multiple
-        type="file"
-        // value={value}
-        onChange={handleChange}
-      />
-      <label htmlFor="contained-button-file">
-        <Button
-          variant="contained"
-          color="primary"
-          component="span"
-          startIcon={<FolderOpenIcon />}
-        >
-          Open file
-        </Button>
-      </label>
+    <Grid container justifyContent="center" alignItems="center">
+      <Grid item>
+        <input
+          accept=".txt"
+          className={classes.input}
+          id="contained-button-file"
+          multiple
+          type="file"
+          // value={value}
+          onChange={handleChange}
+        />
+        <label htmlFor="contained-button-file">
+          <Button
+            variant="contained"
+            color="primary"
+            component="span"
+            startIcon={<FolderOpenIcon />}
+          >
+            Open file
+          </Button>
+        </label>
+      </Grid>
+
       {/* <div> {fileUpload.name}</div> */}
       {/* <input
         accept="image/*"
@@ -92,7 +96,7 @@ function RSfileUpload(props: IRSfileUploadProps) {
           <PhotoCamera />
         </IconButton>
       </label> */}
-    </div>
+    </Grid>
   );
 }
 

@@ -16,7 +16,7 @@ function RSfileInputSection(props: IProps) {
   useEffect(() => {
     const text = fileUpload.content;
     setText(text);
-  }, [fileUpload]);
+  }, [setText, fileUpload]);
 
   return (
     <>

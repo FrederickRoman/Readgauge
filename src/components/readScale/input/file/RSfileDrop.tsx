@@ -1,9 +1,12 @@
 import React, { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+
 function RSfileDrop() {
   const onDrop = useCallback((acceptedFiles) => {
-    acceptedFiles.forEach((file:any) => {
+    acceptedFiles.forEach((file: File) => {
       const reader = new FileReader();
 
       reader.onabort = () => console.log("file reading was aborted");
@@ -14,18 +17,26 @@ function RSfileDrop() {
         console.log(binaryStr);
         // console.log(e.target.result);
       };
-    //   console.log(file)
-    //   reader.readAsArrayBuffer(file);
+      console.log(file);
+      //   reader.readAsArrayBuffer(file);
       reader.readAsText(file);
     });
   }, []);
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
   return (
-    <div {...getRootProps()}>
-      <input {...getInputProps()} />
-      <p>Drag 'n' drop some files here, or click to select files</p>
-    </div>
+    <Box margin={5}>
+      <div {...getRootProps()}>
+        <input {...getInputProps()} />
+        <Box padding={1} borderRadius={5} border="dashed 5px gray">
+          <Grid container justifyContent="center" alignItems="center">
+            <Grid item>
+              <p> Drag 'n' drop some files here, or click to select files</p>
+            </Grid>
+          </Grid>
+        </Box>
+      </div>
+    </Box>
   );
 }
 
