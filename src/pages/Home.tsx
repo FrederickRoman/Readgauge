@@ -6,12 +6,14 @@ import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import HeroBanner from "../components/banner/HeroBanner";
+import IntroDemoSection from "../components/content/home/IntroDemoSection";
 
 function Home(): JSX.Element {
   const { text, setText, score, running } = useScore();
   return (
     <>
       <HeroBanner />
+      <IntroDemoSection />
       <Container maxWidth="md">
         <Grid container>
           <Grid item xs={12} sm={6}>
