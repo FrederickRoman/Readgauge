@@ -23,6 +23,7 @@ function CircularProgressWithLabel(
     <Box
       position="relative"
       display="inline-flex"
+      ml={5}
       style={{ border: "3px solid green", borderRadius: "50%" }}
     >
       <CircularProgress variant="determinate" size={180} value={value} />
