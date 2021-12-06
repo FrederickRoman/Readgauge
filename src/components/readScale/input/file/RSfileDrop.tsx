@@ -31,7 +31,7 @@ function RSfileDrop() {
         <Box padding={1} borderRadius={5} border="dashed 5px gray">
           <Grid container justifyContent="center" alignItems="center">
             <Grid item>
-              <p> Drag 'n' drop some files here, or click to select files</p>
+              <p> Drop files here</p>
             </Grid>
           </Grid>
         </Box>
