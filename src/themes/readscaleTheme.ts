@@ -1,5 +1,5 @@
 import { createTheme, Theme } from "@mui/material/styles";
-import { grey, orange, deepPurple } from "@mui/material/colors";
+import { deepPurple, orange, brown, grey as gray } from "@mui/material/colors";
 
 const readscaleTheme: Theme = createTheme({
   palette: {
@@ -10,7 +10,8 @@ const readscaleTheme: Theme = createTheme({
       main: orange[200],
     },
     background: {
-      default: grey[50],
+      default: brown[50],
+      paper: gray[50],
     },
   },
 });
