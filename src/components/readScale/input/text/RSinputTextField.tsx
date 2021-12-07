@@ -23,6 +23,7 @@ function RSinputTextField(props: IProps): JSX.Element {
         value={text}
         onChange={handleChange}
         variant="outlined"
+        style={{ width: "max(150px, 25vw - 10px)" }}
       />
     </form>
   );
