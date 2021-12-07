@@ -52,13 +52,13 @@ function ReadscaleDemo(): JSX.Element {
   return (
     <>
       <BookCurveDivider place="top" />
-      <Container maxWidth="md">
+      <Container maxWidth="xl">
         <Grid container>
           <Grid item xs={12} sm={6}>
             <Box
               sx={{
                 flexGrow: 1,
-                bgcolor: "background.paper",
+                bgcolor: "background",
                 display: "flex",
                 height: 224,
               }}
