@@ -1,11 +1,14 @@
 import { AppBar, Grid, Toolbar, Typography } from "@mui/material";
+import ExternalLink from "../link/ExternalLink";
 
 function Copyright(): JSX.Element {
   const currentYear: number = new Date().getFullYear();
   return (
-    <Typography variant="subtitle2">
-      &copy; Frederick Roman {currentYear}
-    </Typography>
+    <ExternalLink href="https://www.frederickroman.com">
+      <Typography variant="subtitle2">
+        &copy; Frederick Roman {currentYear}
+      </Typography>
+    </ExternalLink>
   );
 }
 
