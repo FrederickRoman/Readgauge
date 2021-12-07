@@ -17,6 +17,7 @@ function RStextInputSection(props: IProps): JSX.Element {
       flexDirection="column"
       justifyContent="center"
       alignItems="center"
+      sx={{bgcolor:"background"}}
     >
       <Grid item>
         <RSinputTextField text={text} setText={setText} />
