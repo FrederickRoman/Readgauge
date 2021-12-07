@@ -50,15 +50,15 @@ function ReadscaleDemo(): JSX.Element {
   };
 
   return (
-    <>
+    <Box component="section" mb={10} sx={{bgcolor:"background.paper"}}>
       <BookCurveDivider place="top" />
-      <Container maxWidth="xl">
-        <Grid container>
-          <Grid item xs={12} sm={6}>
+      <Container maxWidth="xl" >
+        <Grid container >
+          <Grid item xs={12} sm={6}  sx={{bgcolor:"background.paper"}}>
             <Box
               sx={{
                 flexGrow: 1,
-                bgcolor: "background",
+                bgcolor:"background.paper !important",
                 display: "flex",
                 height: 224,
               }}
@@ -69,7 +69,7 @@ function ReadscaleDemo(): JSX.Element {
                 value={value}
                 onChange={handleChange}
                 aria-label="Vertical tabs example"
-                sx={{ borderRight: 1, borderColor: "divider" }}
+                sx={{ borderRight: 1, borderColor: "divider" , bgcolor:"background.paper"}}
               >
                 <Tab label="Text" {...a11yProps(0)} />
                 <Tab label="File" {...a11yProps(1)} />
@@ -82,7 +82,7 @@ function ReadscaleDemo(): JSX.Element {
               </TabPanel>
             </Box>
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={6} sx={{bgcolor:"background.paper"}}>
             <Box component="span" m={5}>
               <RSoutputSection score={score} running={running} />
             </Box>
@@ -90,7 +90,7 @@ function ReadscaleDemo(): JSX.Element {
         </Grid>
       </Container>
       <BookCurveDivider place="bottom" />
-    </>
+    </Box>
   );
 }
 
