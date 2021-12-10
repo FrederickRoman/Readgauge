@@ -42,7 +42,7 @@ function CircularProgressWithLabel(
           variant="caption"
           component="div"
           color="textSecondary"
-          style={{ fontSize: "1.3em" }}
+          style={{ fontSize: "1.1em" }}
         >
           {running ? "Calculating..." : scoreSchoolLevel}
         </Typography>
