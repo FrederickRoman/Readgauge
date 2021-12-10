@@ -83,7 +83,7 @@ function ReadscaleDemo(): JSX.Element {
             </Box>
           </Grid>
           <Grid item xs={12} sm={6} sx={{bgcolor:"background.paper"}}>
-            <Box component="span" m={5}>
+            <Box component="span" my={5}>
               <RSoutputSection score={score} running={running} />
             </Box>
           </Grid>
