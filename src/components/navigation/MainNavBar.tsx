@@ -1,27 +1,27 @@
 import { Link } from "react-router-dom";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Grid,
+  Box,
+  Button,
+  IconButton,
+} from "@mui/material";
 import HelpIcon from "@mui/icons-material/Help";
-import { createStyles, makeStyles } from "@mui/styles";
-
+import { makeStyles } from "@mui/styles";
 import logo from "../../assets/img/logo.svg";
 
-const useStyles = makeStyles(() =>
-  createStyles({
-    link: {
-      color: "white",
-      textDecoration: "none",
-    },
-    title: {
-      color: "white",
-    },
-  })
-);
+const useStyles = makeStyles({
+  link: {
+    color: "white",
+    textDecoration: "none",
+  },
+  title: {
+    color: "white",
+    textTransform: "none",
+  },
+});
 
 function HomeLink(): JSX.Element {
   const classes = useStyles();
@@ -35,7 +35,7 @@ function HomeLink(): JSX.Element {
             </Grid>
             <Grid item>
               <Typography variant="h6" className={classes.title}>
-                Readguage
+                ReadGuage
               </Typography>
             </Grid>
           </Grid>
@@ -49,15 +49,19 @@ function AboutLink(): JSX.Element {
   return (
     <Box>
       <Link to="/about">
-        <IconButton size="medium" aria-label="about">
-          <HelpIcon color="secondary" />
+        <IconButton
+          size="medium"
+          aria-label="about"
+          sx={{ color: "background.paper" }}
+        >
+          <HelpIcon />
         </IconButton>
       </Link>
     </Box>
   );
 }
 
-function MainBar(): JSX.Element {
+function MainNavBar(): JSX.Element {
   return (
     <AppBar position="static">
       <Toolbar>
@@ -65,11 +69,13 @@ function MainBar(): JSX.Element {
           <Grid item>
             <HomeLink />
           </Grid>
-          <Grid item>{/* <AboutLink /> */}</Grid>
+          <Grid item>
+            <AboutLink />
+          </Grid>
         </Grid>
       </Toolbar>
     </AppBar>
   );
 }
 
-export default MainBar;
+export default MainNavBar;

@@ -1,14 +1,14 @@
 import { BrowserRouter as Router } from "react-router-dom";
-import Footer from "./components/footer/Footer";
-import Home from "./pages/Home";
-import MainBar from "./components/navigation/MainBar";
+import MainFooter from "./components/footer/MainFooter";
+import PageRoutes from "./router/PageRoutes";
+import MainNavBar from "./components/navigation/MainNavBar";
 
 function App() {
   return (
     <Router>
-      <MainBar />
-      <Home />
-      <Footer />
+      <MainNavBar />
+      <PageRoutes />
+      <MainFooter />
     </Router>
   );
 }
