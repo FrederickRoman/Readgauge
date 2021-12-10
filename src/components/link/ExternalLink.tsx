@@ -3,7 +3,7 @@ import { Link } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 
 interface Props {
-  href: string;
+  to: string;
   children: ReactNode;
 }
 
@@ -15,11 +15,11 @@ const useStyles = makeStyles({
 });
 
 function ExternalLink(props: Props): JSX.Element {
-  const { href, children } = props;
+  const { to, children } = props;
   const classes = useStyles();
   return (
     <Link
-      href={href}
+      href={to}
       target="_blank"
       rel="noopener"
       className={classes.link_undecorated}
