@@ -23,7 +23,7 @@ function IntroDemoSection(): JSX.Element {
             <b> It calculates the US school reading level of a text.</b>
           </p>
           <p className={classes.feature}>
-            <b>It uses Neuro-Flesh</b> which is a neural version of the flesch
+            <b>It uses Neuro-Flesch</b> which is a neural version of the flesch
             scoring system created for this app.
           </p>
           <p className={classes.feature}>
