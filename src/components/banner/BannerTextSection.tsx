@@ -8,7 +8,7 @@ function BrandLogoImg(): JSX.Element {
 }
 
 function BrandLogoName(): JSX.Element {
-  return <span style={{ color: "white", fontSize: "2em" }}>Readgauge</span>;
+  return <span style={{ color: "white", fontSize: "2em" }}>ReadGauge</span>;
 }
 
 function BrandSlogan(): JSX.Element {
