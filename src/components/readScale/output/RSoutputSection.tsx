@@ -17,9 +17,10 @@ function RSoutputSection(props: IProps): JSX.Element {
       flexDirection="column"
       justifyContent="center"
       alignItems="center"
+      flexBasis="auto"
     >
       <Grid item>
-        <RSoutputChart score={score} running={running}/>
+        <RSoutputChart score={score} running={running} />
       </Grid>
       <Grid item>
         <RSoutputText score={score} />

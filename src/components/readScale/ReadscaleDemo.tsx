@@ -78,12 +78,13 @@ function ReadscaleDemo(): JSX.Element {
                 <RSinputSection text={text} setText={setText} />
               </TabPanel>
               <TabPanel value={value} index={1}>
-                <RSfileInputSection setText={setText} />
+              <Box my={5}>
+                <RSfileInputSection setText={setText} /> </Box>
               </TabPanel>
             </Box>
           </Grid>
           <Grid item xs={12} sm={6} sx={{bgcolor:"background.paper"}}>
-            <Box component="span" my={5}>
+            <Box my={5}>
               <RSoutputSection score={score} running={running} />
             </Box>
           </Grid>
