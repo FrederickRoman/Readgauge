@@ -14,7 +14,6 @@ function RStextInputSection(props: IProps): JSX.Element {
   return (
     <Grid
       container
-      flexDirection="column"
       justifyContent="center"
       alignItems="center"
     >
