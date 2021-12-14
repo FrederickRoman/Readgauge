@@ -23,13 +23,14 @@ function AboutAppSection(): JSX.Element {
             Neuro-Flesch calculates the reading level using a modified version
             the Flesch-Kincaid grade level formula.
           </p>
-          <figure>
+          <figure style={{margin:5}}>
             <img
               src={FleschKincaidGradeFormula}
               alt="Flesch Kincaid Grade Formula"
+              style={{ width: "min(75vw, 500px)" }}
             />
-            <figcaption>
-              Flesch Kincaid Grade Formula (source:Wikipedia)
+            <figcaption style={{fontSize: "0.75em"}}>
+              Flesch Kincaid Grade Formula (Wikipedia)
             </figcaption>
           </figure>
           <p>
