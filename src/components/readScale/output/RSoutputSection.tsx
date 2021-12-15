@@ -4,12 +4,13 @@ import RSoutputText from "./text/RSoutputText";
 import Grid from "@mui/material/Grid";
 
 interface IProps {
+  blank: boolean;
   score: number;
   running: boolean;
 }
 
 function RSoutputSection(props: IProps): JSX.Element {
-  const { score, running } = props;
+  const { blank, score, running } = props;
 
   return (
     <Grid
@@ -20,10 +21,10 @@ function RSoutputSection(props: IProps): JSX.Element {
       flexBasis="auto"
     >
       <Grid item>
-        <RSoutputChart score={score} running={running} />
+        <RSoutputChart blank={blank} score={score} running={running} />
       </Grid>
       <Grid item>
-        <RSoutputText score={score} />
+        <RSoutputText blank={blank}  score={score} />
       </Grid>
     </Grid>
   );

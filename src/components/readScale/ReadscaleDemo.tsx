@@ -20,8 +20,8 @@ function TabPanel(props: TabPanelProps) {
     <div
       role="tabpanel"
       hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
+      id={`demo-tabpanel-${index}`}
+      aria-labelledby={`demo-tab-${index}`}
       {...other}
     >
       {value === index && (
@@ -35,17 +35,17 @@ function TabPanel(props: TabPanelProps) {
 
 function a11yProps(index: number) {
   return {
-    id: `simple-tab-${index}`,
-    "aria-controls": `simple-tabpanel-${index}`,
+    id: `demo-tab-${index}`,
+    "aria-controls": `demo-tabpanel-${index}`,
   };
 }
 
 function ReadscaleDemo(): JSX.Element {
   const { text, setText, score, running } = useScore();
+  const blank = text === "";
+  const [value, setValue] = useState<0 | 1>(0);
 
-  const [value, setValue] = useState(0);
-
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+  const handleChange = (_: React.SyntheticEvent, newValue: 0 | 1) => {
     setValue(newValue);
   };
 
@@ -67,7 +67,6 @@ function ReadscaleDemo(): JSX.Element {
           <Grid item xs={12} sm={6}>
             <Grid container justifyContent="center" alignItems="center">
               <Grid item>
-                {" "}
                 <Box
                   sx={{
                     flexGrow: 1,
@@ -96,7 +95,7 @@ function ReadscaleDemo(): JSX.Element {
                   </TabPanel>
                   <TabPanel value={value} index={1}>
                     <Box my={5}>
-                      <RSfileInputSection setText={setText} />{" "}
+                      <RSfileInputSection setText={setText} />
                     </Box>
                   </TabPanel>
                 </Box>
@@ -105,7 +104,7 @@ function ReadscaleDemo(): JSX.Element {
           </Grid>
           <Grid item xs={12} sm={6} sx={{ bgcolor: "background.paper" }}>
             <Box my={5}>
-              <RSoutputSection score={score} running={running} />
+              <RSoutputSection blank={blank} score={score} running={running} />
             </Box>
           </Grid>
         </Grid>

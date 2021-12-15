@@ -1,32 +1,46 @@
-import CircularProgress, {
-  CircularProgressProps,
-} from "@mui/material/CircularProgress";
+import CircularProgress from "@mui/material/CircularProgress";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import FleshReadingEaseService from "../../../../services/readability/scales/fleschReadingEase/FleshReadingEaseService";
 
-interface IProps {
+interface Props {
+  blank: boolean;
   score: number;
   running: boolean;
 }
 
 const { scoreToUSschoolLevel } = FleshReadingEaseService;
 
-function CircularProgressWithLabel(
-  props: CircularProgressProps & { score: number; running: boolean }
-) {
-  const { score, running } = props;
-  const value = 100 - Math.min(Math.max(0, score), 100);
-  const { scoreSchoolLevel } = scoreToUSschoolLevel(score);
+function mapValueToColor(value: number): string {
+  if (value < 33) return "green";
+  else if (value < 66) return "goldenrod";
+  else return "red";
+}
 
+function RSoutputChart(props: Props): JSX.Element {
+  const { blank, score, running } = props;
+  const chartValue = 100 - Math.min(Math.max(0, score), 100);
+  const chartBorderColor = blank ? "gray" : mapValueToColor(chartValue);
+  const chartCenterCaption = blank
+    ? "ReadGauge"
+    : running
+    ? "Calculating..."
+    : scoreToUSschoolLevel(score).scoreSchoolLevel;
   return (
     <Box
       position="relative"
       display="inline-flex"
       ml={5}
-      style={{ border: "3px solid green", borderRadius: "50%" }}
+      border={3}
+      borderColor={chartBorderColor}
+      borderRadius="50%"
     >
-      <CircularProgress variant="determinate" size={180} value={value} />
+      <CircularProgress
+        variant="determinate"
+        size={180}
+        value={chartValue}
+        style={{ color: mapValueToColor(chartValue)}}
+      />
       <Box
         top={0}
         left={0}
@@ -42,17 +56,13 @@ function CircularProgressWithLabel(
           variant="caption"
           component="div"
           color="textSecondary"
-          style={{ fontSize: "1.1em" }}
+          fontSize="1.1em"
         >
-          {running ? "Calculating..." : scoreSchoolLevel}
+          {chartCenterCaption}
         </Typography>
       </Box>
     </Box>
   );
 }
 
-export default function CircularStatic(props: IProps) {
-  const { score, running } = props;
-
-  return <CircularProgressWithLabel score={score} running={running} />;
-}
+export default RSoutputChart;
