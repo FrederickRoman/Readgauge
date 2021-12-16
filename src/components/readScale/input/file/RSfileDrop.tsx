@@ -3,35 +3,53 @@ import { useDropzone } from "react-dropzone";
 
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
+import { Ifile } from "../../../../types/interfaces/Ifile";
 
-function RSfileDrop() {
-  const onDrop = useCallback((acceptedFiles) => {
-    acceptedFiles.forEach((file: File) => {
-      const reader = new FileReader();
+interface Props {
+  setFileUpload: React.Dispatch<React.SetStateAction<Ifile>>;
+}
 
-      reader.onabort = () => console.log("file reading was aborted");
-      reader.onerror = () => console.log("file reading has failed");
-      reader.onload = () => {
-        // Do whatever you want with the file contents
-        const binaryStr = reader.result;
-        console.log(binaryStr);
-        // console.log(e.target.result);
+function readDroppedFile(file: File): Promise<Ifile> {
+  const reader = new FileReader();
+  reader.readAsText(file);
+  return new Promise((resolve, reject) => {
+    reader.onabort = () => reject("file reading was aborted");
+    reader.onerror = () => reject("file reading has failed");
+    reader.onload = () => {
+      const fileRead: Ifile = {
+        name: file.name,
+        content: `${reader.result}`,
       };
-      console.log(file);
-      //   reader.readAsArrayBuffer(file);
-      reader.readAsText(file);
+      resolve(fileRead);
+    };
+  });
+}
+
+function RSfileDrop(props: Props): JSX.Element {
+  const { setFileUpload } = props;
+
+  const onDrop = useCallback((acceptedFiles) => {
+    acceptedFiles.forEach(async (file: File) => {
+      try {
+        const fileRead: Ifile = await readDroppedFile(file);
+        setFileUpload(fileRead);
+      } catch (error) {
+        console.error(error);
+        setFileUpload({ name: "", content: "" });
+      }
     });
   }, []);
+
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
   return (
-    <Box margin={5}>
+    <Box >
       <div {...getRootProps()}>
         <input {...getInputProps()} />
         <Box padding={1} borderRadius={5} border="dashed 5px gray">
           <Grid container justifyContent="center" alignItems="center">
             <Grid item>
-              <p> Drop files here</p>
+              <p> Drop file</p>
             </Grid>
           </Grid>
         </Box>
