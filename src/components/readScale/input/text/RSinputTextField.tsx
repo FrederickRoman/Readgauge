@@ -19,7 +19,7 @@ function RSinputTextField(props: IProps): JSX.Element {
         id="outlined-multiline-static"
         label="Write text here"
         multiline
-        rows={6}
+        rows={8}
         value={text}
         onChange={handleChange}
         variant="outlined"
