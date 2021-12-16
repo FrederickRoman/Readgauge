@@ -25,7 +25,7 @@ function TabPanel(props: TabPanelProps) {
       {...other}
     >
       {value === index && (
-        <Box sx={{ p: 3 }}>
+        <Box>
           <Typography component="span">{children}</Typography>
         </Box>
       )}
@@ -65,7 +65,12 @@ function ReadscaleDemo(): JSX.Element {
           sx={{ bgcolor: "background.paper" }}
         >
           <Grid item xs={12} sm={6}>
-            <Grid container justifyContent="center" alignItems="center">
+            <Grid
+              container
+              justifyContent="center"
+              alignItems="center"
+              sx={{ height: 350 }}
+            >
               <Grid item>
                 <Box
                   sx={{
@@ -90,14 +95,18 @@ function ReadscaleDemo(): JSX.Element {
                     <Tab label="Text" {...a11yProps(0)} />
                     <Tab label="File" {...a11yProps(1)} />
                   </Tabs>
-                  <TabPanel value={value} index={0}>
-                    <RSinputSection text={text} setText={setText} />
-                  </TabPanel>
-                  <TabPanel value={value} index={1}>
-                    <Box my={5}>
-                      <RSfileInputSection setText={setText} />
-                    </Box>
-                  </TabPanel>
+                  <Box ml={1}>
+                    <TabPanel value={value} index={0}>
+                      <RSinputSection text={text} setText={setText} />
+                    </TabPanel>
+                  </Box>
+                  <Box ml={1}>
+                    <TabPanel value={value} index={1}>
+                      <Box my={5}>
+                        <RSfileInputSection setText={setText} />
+                      </Box>
+                    </TabPanel>
+                  </Box>
                 </Box>
               </Grid>
             </Grid>
