@@ -19,7 +19,7 @@ function mapValueToColor(value: number): string {
 
 function RSoutputChart(props: Props): JSX.Element {
   const { blank, score, running } = props;
-  const chartValue = 100 - Math.min(Math.max(0, score), 100);
+  const chartValue = blank ? 0 : 100 - Math.min(Math.max(0, score), 100);
   const chartBorderColor = blank ? "gray" : mapValueToColor(chartValue);
   const chartCenterCaption = blank
     ? "ReadGauge"
@@ -39,7 +39,7 @@ function RSoutputChart(props: Props): JSX.Element {
         variant="determinate"
         size={180}
         value={chartValue}
-        style={{ color: mapValueToColor(chartValue)}}
+        style={{ color: mapValueToColor(chartValue) }}
       />
       <Box
         top={0}
