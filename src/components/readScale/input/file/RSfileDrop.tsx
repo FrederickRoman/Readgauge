@@ -27,23 +27,24 @@ function readDroppedFile(file: File): Promise<Ifile> {
 
 function RSfileDrop(props: Props): JSX.Element {
   const { setFileUpload } = props;
-
-  const onDrop = useCallback((acceptedFiles) => {
-    acceptedFiles.forEach(async (file: File) => {
-      try {
-        const fileRead: Ifile = await readDroppedFile(file);
-        setFileUpload(fileRead);
-      } catch (error) {
-        console.error(error);
-        setFileUpload({ name: "", content: "" });
-      }
-    });
-  }, [setFileUpload]);
-
+  const onDrop = useCallback(
+    (acceptedFiles: File[]): void => {
+      acceptedFiles.forEach(async (file) => {
+        try {
+          const fileRead: Ifile = await readDroppedFile(file);
+          setFileUpload(fileRead);
+        } catch (error) {
+          console.error("Failed to read dropped file");
+          setFileUpload({ name: "", content: "" });
+        }
+      });
+    },
+    [setFileUpload]
+  );
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
   return (
-    <Box >
+    <Box>
       <div {...getRootProps()}>
         <input {...getInputProps()} />
         <Box padding={1} borderRadius={5} border="dashed 5px gray">
