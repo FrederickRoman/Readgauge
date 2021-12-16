@@ -55,5 +55,13 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "author": {
+    "name": "Frederick Roman",
+    "url": "https://frederickroman.com/"
+  },
+  "engines": {
+    "node": "14.x",
+    "yarn": "1.x"
   }
 }
