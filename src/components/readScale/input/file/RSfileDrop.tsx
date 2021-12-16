@@ -38,7 +38,7 @@ function RSfileDrop(props: Props): JSX.Element {
         setFileUpload({ name: "", content: "" });
       }
     });
-  }, []);
+  }, [setFileUpload]);
 
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
