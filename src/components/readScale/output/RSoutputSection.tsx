@@ -1,17 +1,14 @@
+import Grid from "@mui/material/Grid";
 import RSoutputChart from "./chart/RSoutputChart";
 import RSoutputText from "./text/RSoutputText";
 
-import Grid from "@mui/material/Grid";
-
-interface IProps {
+interface Props {
   blank: boolean;
   score: number;
   running: boolean;
 }
 
-function RSoutputSection(props: IProps): JSX.Element {
-  const { blank, score, running } = props;
-
+function RSoutputSection(props: Props): JSX.Element {
   return (
     <Grid
       container
@@ -21,10 +18,10 @@ function RSoutputSection(props: IProps): JSX.Element {
       flexBasis="auto"
     >
       <Grid item>
-        <RSoutputChart blank={blank} score={score} running={running} />
+        <RSoutputChart {...props} />
       </Grid>
       <Grid item>
-        <RSoutputText blank={blank}  score={score} />
+        <RSoutputText {...props} />
       </Grid>
     </Grid>
   );

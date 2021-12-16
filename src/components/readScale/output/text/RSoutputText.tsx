@@ -4,14 +4,17 @@ import FleshReadingEaseService from "../../../../services/readability/scales/fle
 interface IProps {
   blank: boolean;
   score: number;
+  running: boolean;
 }
 
 const { scoreToUSschoolLevel } = FleshReadingEaseService;
 
 function RSoutputText(props: IProps): JSX.Element {
-  const { blank, score } = props;
+  const { blank, score, running } = props;
   const outputText = blank
     ? "Score will be shown here"
+    : running
+    ? ""
     : scoreToUSschoolLevel(score).scoreSchoolDescription;
   return (
     <Box height={50} ml={5}>
