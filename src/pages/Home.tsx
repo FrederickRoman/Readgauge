@@ -1,7 +1,9 @@
+import { ErrorBoundary } from "react-error-boundary";
+import { Grid } from "@mui/material";
 import HeroBanner from "../components/banner/HeroBanner";
 import IntroDemoSection from "../components/content/home/IntroDemoSection";
 import ReadscaleDemo from "../components/readScale/ReadscaleDemo";
-import { Grid } from "@mui/material";
+import AppFallback from "../components/fallback/AppFallback";
 
 function Home(): JSX.Element {
   return (
@@ -14,7 +16,9 @@ function Home(): JSX.Element {
           <IntroDemoSection />
         </Grid>
         <Grid item>
-          <ReadscaleDemo />
+          <ErrorBoundary FallbackComponent={AppFallback}>
+            <ReadscaleDemo />
+          </ErrorBoundary>
         </Grid>
       </Grid>
     </main>
