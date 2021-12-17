@@ -37,7 +37,7 @@ function RSfileInputSection(props: IProps) {
         </Grid>
         <Grid item>
           <Box textAlign="center" m={2}>
-            -----------OR-----------
+            -----OR----
           </Box>
         </Grid>
         <Grid item>
