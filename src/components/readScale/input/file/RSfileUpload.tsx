@@ -74,6 +74,7 @@ function RSfileUpload(props: IRSfileUploadProps) {
             color="primary"
             component="span"
             startIcon={<FolderOpenIcon />}
+            style={{ textTransform: "none" }}
           >
             Open file
           </Button>
