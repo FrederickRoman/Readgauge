@@ -14,7 +14,7 @@ function RSfileInputSection(props: IProps) {
   const DEFAULT_FILE: Ifile = { name: "", content: "" };
   const [fileUpload, setFileUpload] = useState<Ifile>(DEFAULT_FILE);
   const fileInputMessage =
-    fileUpload.name === "" ? "Select file by:" : `Selected: ${fileUpload.name}`;
+    fileUpload.name === "" ? "Select by:" : `${fileUpload.name}`;
 
   useEffect(() => {
     console.log(fileUpload);
@@ -26,7 +26,7 @@ function RSfileInputSection(props: IProps) {
     <Box>
       <Grid flexDirection="column" justifyContent="center" alignItems="center">
         <Grid item>
-          <Box textAlign="center" m={2}>
+          <Box textAlign="center" width={80} height={48} m={2}>
             {fileInputMessage}
           </Box>
         </Grid>
