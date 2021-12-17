@@ -50,7 +50,19 @@ function RSfileDrop(props: Props): JSX.Element {
         <Box padding={1} borderRadius={5} border="dashed 5px gray">
           <Grid container justifyContent="center" alignItems="center">
             <Grid item>
-              <p> Drop file</p>
+              <Grid
+                container
+                flexDirection="column"
+                justifyContent="center"
+                alignItems="center"
+              >
+                <Grid item>
+                   Drop file 
+                </Grid>
+                <Grid item>
+                 (.txt)
+                </Grid>
+              </Grid>
             </Grid>
           </Grid>
         </Box>
