@@ -1,4 +1,5 @@
 import FleschKincaidGradeFormula from "../../../assets/img/FleschKincaidGradeFormula.svg";
+import SyllablesPredDemo from "../../demo/syllableCountPrediction/SyllablesPredDemo";
 
 function AboutAppSection(): JSX.Element {
   return (
@@ -23,20 +24,21 @@ function AboutAppSection(): JSX.Element {
             Neuro-Flesch calculates the reading level using a modified version
             the Flesch-Kincaid grade level formula.
           </p>
-          <figure style={{margin:5}}>
+          <figure style={{ margin: 5 }}>
             <img
               src={FleschKincaidGradeFormula}
               alt="Flesch Kincaid Grade Formula"
               style={{ width: "min(75vw, 500px)" }}
             />
-            <figcaption style={{fontSize: "0.75em"}}>
+            <figcaption style={{ fontSize: "0.75em" }}>
               Flesch Kincaid Grade Formula (Wikipedia)
             </figcaption>
           </figure>
           <p>
             The key difference is that in Neuro-Flesch the total number of
-            syllables is predicted rather looked up in a dictionary.
+            syllables is <b>predicted</b> rather looked up in a dictionary.
           </p>
+          <SyllablesPredDemo/>
         </div>
       </div>
     </section>
