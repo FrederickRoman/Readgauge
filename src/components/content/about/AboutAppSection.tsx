@@ -1,5 +1,7 @@
+import { ErrorBoundary } from "react-error-boundary";
 import FleschKincaidGradeFormula from "../../../assets/img/FleschKincaidGradeFormula.svg";
 import SyllablesPredDemo from "../../demo/syllableCountPrediction/SyllablesPredDemo";
+import AppFallback from "../../fallback/AppFallback";
 
 function AboutAppSection(): JSX.Element {
   return (
@@ -38,7 +40,9 @@ function AboutAppSection(): JSX.Element {
             The key difference is that in Neuro-Flesch the total number of
             syllables is <b>predicted</b> rather looked up in a dictionary.
           </p>
-          <SyllablesPredDemo/>
+          <ErrorBoundary FallbackComponent={AppFallback}>
+            <SyllablesPredDemo />
+          </ErrorBoundary>
         </div>
       </div>
     </section>
