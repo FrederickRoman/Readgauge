@@ -76,7 +76,7 @@ function SyllablesPredChart(props: Props): JSX.Element {
     ],
   };
   return (
-    <Box width="80vw">
+    <Box width="min(80vw, 640px)">
       <Line options={chartOptions} data={chartData} />
     </Box>
   );
