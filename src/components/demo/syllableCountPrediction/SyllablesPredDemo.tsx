@@ -8,6 +8,7 @@ import {
   tidy,
 } from "@tensorflow/tfjs";
 import Preprocessing from "../../../services/syllableCount/Preprocessing";
+import Postprocessing from "../../../services/syllableCount/Postprocessing";
 import SyllablesPredChart from "./chart/SyllablesPredChart";
 
 function useSyllableCountDemo() {
@@ -56,9 +57,18 @@ function useSyllableCountDemo() {
   return { setText, probs };
 }
 
+function getPredictionMsg(probs: number[]): string {
+  const mostLikelyNumOfSyllables = Postprocessing.indexOfMax(probs);
+  const predictionMsgText =
+    `It has most likely ${mostLikelyNumOfSyllables} syllable` +
+    `${mostLikelyNumOfSyllables === 1 ? "" : "s"}`;
+  return predictionMsgText;
+}
+
 function SyllablesPredDemo(): JSX.Element {
   const [value, setValue] = useState<string>("");
   const { setText, probs } = useSyllableCountDemo();
+  const predictionMsgText = getPredictionMsg(probs);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
@@ -86,7 +96,7 @@ function SyllablesPredDemo(): JSX.Element {
                 label="Write word here"
                 variant="outlined"
                 type="search"
-                helperText="one word only (e.g. cat)"
+                //helperText="one word only (e.g. cat)"
                 value={value}
                 onChange={handleChange}
               />
@@ -95,7 +105,18 @@ function SyllablesPredDemo(): JSX.Element {
         </Grid>
       </Grid>
       <Grid item>
-        <SyllablesPredChart predProbs={probs} />
+        <Grid container justifyContent="center" alignItems="center">
+          <Grid item>
+            <Box>{predictionMsgText}</Box>
+          </Grid>
+        </Grid>
+      </Grid>
+      <Grid item>
+        <Grid container justifyContent="center" alignItems="center">
+          <Grid item>
+            <SyllablesPredChart predProbs={probs} />
+          </Grid>
+        </Grid>
       </Grid>
     </Grid>
   );
