@@ -14,7 +14,7 @@ const memoWordEncoder: (word: string) => number[] =
 const indexOfMax: (arr: number[]) => number = Postprocessing.indexOfMax;
 
 function sequentialCount(args: ISequentialCountArgs): number {
-  console.time("count 2");
+  // console.time("count 2");
   const { words, model } = args;
 
   const MAX_NUM_OF_CHARS: number = 33;
@@ -37,7 +37,7 @@ function sequentialCount(args: ISequentialCountArgs): number {
   words.forEach((word: string): void => {
     totSyllableCount += memoPredictSyllabeCount(word);
   });
-  console.timeEnd("count 2");
+  // console.timeEnd("count 2");
   return totSyllableCount;
 }
 

@@ -17,7 +17,7 @@ function RSfileInputSection(props: IProps) {
     fileUpload.name === "" ? "Select by:" : `${fileUpload.name}`;
 
   useEffect(() => {
-    console.log(fileUpload);
+    // console.log(fileUpload);
     const text = fileUpload.content;
     setText(text);
   }, [setText, fileUpload]);

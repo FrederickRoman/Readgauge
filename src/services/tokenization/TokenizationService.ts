@@ -9,7 +9,7 @@ const wordTokenize: (sentence: string) => Promise<string[]> =
 class TokenizationService {
   static async tokenizeToSentences(text: string): Promise<string[]> {
     const sentenceTokens: string[] = await sentenceTokenize(text);
-    console.log(sentenceTokens);
+    // console.log(sentenceTokens);
     return sentenceTokens;
   }
   static async tokenizeToWords(sentence: string): Promise<string[]> {

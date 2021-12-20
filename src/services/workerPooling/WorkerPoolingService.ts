@@ -15,7 +15,7 @@ class WorkerPoolingService {
       this.clearWorkerPool();
       const worker: Worker = new Worker(this.workerURL);
       this.workerPool.push(worker);
-      console.log(`${this.workerURL} pool size: ${this.workerPool.length}`);
+      // console.log(`${this.workerURL} pool size: ${this.workerPool.length}`);
       return new Promise((resolve, reject) => {
         worker.postMessage(args);
         worker.onerror = reject;

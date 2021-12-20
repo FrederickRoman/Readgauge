@@ -35,21 +35,21 @@ function useScore() {
       try {
         if (model && text) {
           setRunning(true);
-          console.time("computing score");
-          console.time("tokenization");
+          // console.time("computing score");
+          // console.time("tokenization");
           const tokenizing: Promise<string[]>[] = [
             tokenizeToSentences(text),
             tokenizeToWords(text),
           ];
           const [sentences, words]: string[][] = await Promise.all(tokenizing);
-          console.timeEnd("tokenization");
+          // console.timeEnd("tokenization");
 
           const countPredInput = { words, model };
           const totNumWords: number = words.length;
           const totNumSentences: number = sentences.length;
-          console.time("syllable counting");
+          // console.time("syllable counting");
           const totNumSyllables: number = await countSyllables(countPredInput);
-          console.timeEnd("syllable counting");
+          // console.timeEnd("syllable counting");
 
           const textFeatures: ItextFeatures = Object.freeze({
             totNumWords,
@@ -57,11 +57,11 @@ function useScore() {
             totNumSyllables,
           });
 
-          console.time("formula application");
+          // console.time("formula application");
           const fkGradeLevelScore: number = fkGradeLevel(textFeatures);
-          console.timeEnd("formula application");
+          // console.timeEnd("formula application");
           setScore(fkGradeLevelScore);
-          console.timeEnd("computing score");
+          // console.timeEnd("computing score");
           setRunning(false);
         } else {
           setScore(Infinity);
@@ -77,10 +77,10 @@ function useScore() {
     return () => clearTimeout(timeoutId);
   }, [text, model]);
 
-  useEffect(() => {
-    console.log("score---");
-    console.log(score);
-  }, [score]);
+  // useEffect(() => {
+  //   console.log("score---");
+  //   console.log(score);
+  // }, [score]);
 
   return { text, setText, score, setScore, running };
 }
