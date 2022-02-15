@@ -16,7 +16,7 @@ const hotEncode = require("./hotEncode");
 /**
  * @type {[key: string]: number}
  */
-const SYLLABLE_COUNT_DICT = require("../data/syllableCountDict.js");
+const SYLLABLE_COUNT_DICT = require("../data/syllableCountDict.json");
 
 /**
  * Takes the syllableCountDict and encode each valid entry of the dict into
