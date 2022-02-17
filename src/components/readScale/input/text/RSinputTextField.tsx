@@ -16,7 +16,6 @@ function RSinputTextField(props: IProps): JSX.Element {
   return (
     <form noValidate autoComplete="off">
       <TextField
-        id="outlined-multiline-static"
         label="Write text here"
         multiline
         rows={8}
@@ -24,6 +23,8 @@ function RSinputTextField(props: IProps): JSX.Element {
         onChange={handleChange}
         variant="outlined"
         style={{ width: "max(150px, 25vw - 10px)" }}
+        id="main-demo_input-text-field"
+        data-testid="demo_input_text-field"
       />
     </form>
   );

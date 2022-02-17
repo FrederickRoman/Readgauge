@@ -57,6 +57,7 @@ function RSoutputChart(props: Props): JSX.Element {
           component="div"
           color="textSecondary"
           fontSize="1.1em"
+          data-testid="demo_output_reading-level"
         >
           {chartCenterCaption}
         </Typography>

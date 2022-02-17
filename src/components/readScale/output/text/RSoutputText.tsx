@@ -17,7 +17,7 @@ function RSoutputText(props: IProps): JSX.Element {
     ? ""
     : scoreToUSschoolLevel(score).scoreSchoolDescription;
   return (
-    <Box height={50} ml={5}>
+    <Box height={50} ml={5} data-testid="demo_output_brief-desc">
       {outputText}
     </Box>
   );
