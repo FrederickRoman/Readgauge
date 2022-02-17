@@ -49,13 +49,13 @@ yarn build
 ```
 
 ### Launches the test runner in the interactive watch mode.
-
+It runs unit tests for the main elements, and integration tests for scoring test cases. 
 ```
 yarn test
 ```
 
 ### Retrains the neural network
-
+It reruns the entire process from data cleaning trough training to evaluation of the model. 
 ```
 node /ml/train
 ```
