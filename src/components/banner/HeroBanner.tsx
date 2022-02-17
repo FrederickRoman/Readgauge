@@ -48,13 +48,9 @@ function HeroBanner(): JSX.Element {
   };
 
   return (
-    <Box position="relative" left={0} top={0}>
+    <Box position="relative" left={0} top={0} role="banner" id="hero-banner">
       <section className={classes.heroBanner_viewContainer}>
-        <Grid
-          container
-          justifyContent="center"
-          alignItems="center"
-        >
+        <Grid container justifyContent="center" alignItems="center">
           <Grid item>
             <img
               src={hero}

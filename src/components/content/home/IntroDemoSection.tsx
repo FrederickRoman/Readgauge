@@ -16,7 +16,12 @@ const useStyles = makeStyles({
 function IntroDemoSection(): JSX.Element {
   const classes = useStyles();
   return (
-    <Box component="section" p={5} className={classes.section}>
+    <Box
+      component="section"
+      p={5}
+      className={classes.section}
+      id="app-description-intro"
+    >
       <Grid container justifyContent="center" alignItems="center">
         <Grid item>
           <p className={classes.feature}>

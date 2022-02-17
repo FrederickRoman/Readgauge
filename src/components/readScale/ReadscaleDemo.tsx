@@ -55,6 +55,7 @@ function ReadscaleDemo(): JSX.Element {
       mx={1}
       mb={10}
       sx={{ bgcolor: "background.paper" }}
+      id="reading-level-scoring-demo"
     >
       <BookCurveDivider place="top" />
       <Container maxWidth="xl">
