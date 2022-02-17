@@ -18,7 +18,7 @@ const fleschReadingEaseScoreTable: readonly freScoreDescription[] = [
   },
   {
     range: { min: 80, max: 90 },
-    schoolLevel: "6th grade ",
+    schoolLevel: "6th grade",
     description: "Easy to read. Conversational English for consumers.",
   },
   {
