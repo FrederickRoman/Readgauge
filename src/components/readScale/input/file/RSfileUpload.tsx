@@ -1,28 +1,16 @@
 import React from "react";
-import { Theme } from "@mui/material/styles";
 import makeStyles from "@mui/styles/makeStyles";
-import createStyles from "@mui/styles/createStyles";
 import Button from "@mui/material/Button";
-// import IconButton from "@mui/material/IconButton";
-// import PhotoCamera from "@mui/icons-material/PhotoCamera";
-
 import FolderOpenIcon from "@mui/icons-material/FolderOpen";
 
 import { Ifile } from "../../../../types/interfaces/Ifile";
 import Grid from "@mui/material/Grid";
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      "& > *": {
-        // margin: theme.spacing(1),
-      },
-    },
-    input: {
-      display: "none",
-    },
-  })
-);
+const useStyles = makeStyles({
+  input: {
+    display: "none",
+  },
+});
 
 interface IRSfileUploadProps {
   setFileUpload: React.Dispatch<React.SetStateAction<Ifile>>;
@@ -65,7 +53,6 @@ function RSfileUpload(props: IRSfileUploadProps) {
           id="contained-button-file"
           multiple
           type="file"
-          // value={value}
           onChange={handleChange}
         />
         <label htmlFor="contained-button-file">
@@ -80,23 +67,6 @@ function RSfileUpload(props: IRSfileUploadProps) {
           </Button>
         </label>
       </Grid>
-
-      {/* <div> {fileUpload.name}</div> */}
-      {/* <input
-        accept="image/*"
-        className={classes.input}
-        id="icon-button-file"
-        type="file"
-      />
-      <label htmlFor="icon-button-file">
-        <IconButton
-          color="primary"
-          aria-label="upload picture"
-          component="span"
-        >
-          <PhotoCamera />
-        </IconButton>
-      </label> */}
     </Grid>
   );
 }
