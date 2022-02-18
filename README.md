@@ -18,7 +18,7 @@
 
 ## Live website
 
-See [Readgauge website](https://readgauge.netlify.app).
+See [Readgauge website](https://readscale.netlify.app).
 
 ## Main libraries used in this project
 
